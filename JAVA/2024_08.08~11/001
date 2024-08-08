@@ -1,0 +1,14 @@
+//1. 문자열 str이 주어질 때, str을 출력하는 코드를 작성해 보기
+
+import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String a = sc.next();
+        
+        
+        System.out.println(a);
+    }
+}
+//이후 출력란에 
