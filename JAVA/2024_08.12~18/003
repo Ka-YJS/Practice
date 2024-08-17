@@ -1,0 +1,11 @@
+/*3. 문자열 !@#$%^&*(\'"<>?:;을 출력하기*/
+
+
+import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) {
+System.out.println("!@#$%^&*(\\'\"<>?:;"); 
+// 특수문자 앞에 \를 넣으면 출력가능! '과 "앞에 \추가해주기
+    }
+}
