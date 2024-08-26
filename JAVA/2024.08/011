@@ -1,0 +1,22 @@
+/*11. 문자열 섞기*/
+/*
+길이가 같은 두 문자열 str1과 str2가 주어집니다.
+두 문자열의 각 문자가 앞에서부터 서로 번갈아가면서 한 번씩 등장하는 문자열을 만들어 return 하는 solution 함수를 완성해 주세요.
+ex. str1 입력값 : aaaa, str2 입력값 : bbbb -> solution출력값 : abababab
+*/
+
+
+class Solution {
+    public String solution(String str1, String str2) {
+        StringBuilder result = new StringBuilder();
+//결과 문자열을 만들기 위해 StringBuilder 객체를 생성함. StringBuilder는 문자열을 효율적으로 조작할 수 있게 해줌
+
+        for (int i = 0; i < str1.length(); i++) {
+//str1의 길이만큼 반복함. str1과 str2의 길이가 같다고 가정했으므로, 어느 문자열의 길이를 사용해도 
+            result.append(str1.charAt(i)); //현재 인덱스 i의 str1 문자를 결과에 추가
+            result.append(str2.charAt(i)); //현재 인덱스 i의 str2 문자를 결과에 추가
+        }
+
+        return result.toString(); //완성된 StringBuilder 객체를 문자열로 변환하여 반환
+    }
+}
