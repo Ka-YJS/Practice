@@ -1,0 +1,31 @@
+/*15. 두 수의 연산 값 비교하기
+연산 ⊕는 두 정수에 대한 연산으로 두 정수를 붙여서 쓴 값을 반환합니다. 예를 들면 다음과 같습니다.
+
+12 ⊕ 3 = 123
+3 ⊕ 12 = 312
+양의 정수 a와 b가 주어졌을 때, a ⊕ b와 2 * a * b 중 더 큰 값을 return하는 solution 함수를 완성해 주세요.
+
+단, a ⊕ b와 2 * a * b가 같으면 a ⊕ b를 return 합니다.
+*/
+
+class Solution {
+    public int solution(int a, int b) {
+        int answer = 0;
+        int num1 = Integer.parseInt(""+a+b);
+        int num2 = 2*a*b;
+        answer = num1>=num2 ? num1 : num2;
+        return answer;
+    }
+}
+
+/*
+다른 사람의 풀이)
+class Solution {
+    public int solution(int a, int b) {
+        return Math.max(Integer.parseInt(String.valueOf(a)+String.valueOf(b)),2*a*b);
+    }
+}
+
+1)Math.max(x,y) : x값과 y값 중에 큰 수를 반환함
+2)valueOf : 괄호 안의 해당 객체를 String 객체로 변환시키는 역할을 함 -> String의 객체로 형변환
+*/
