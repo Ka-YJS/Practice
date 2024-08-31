@@ -21,3 +21,20 @@ class Solution {
 	        return answer;
     }
 }
+
+/*
+다른풀이1)삼항연산자 활용
+class Solution {
+    public int solution(int num, int n) {
+        int answer = num % n == 0 ? 1 : 0;
+        return answer;
+    }
+}
+
+다른풀이2)리턴값 활용
+class Solution {
+    public int solution(int num, int n) {
+        int answer = num % n == 0 ? 1 : 0;
+        return answer;
+    }
+}*/
