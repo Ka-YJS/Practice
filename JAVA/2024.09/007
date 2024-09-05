@@ -24,7 +24,7 @@ class Solution {
             if(mode==0){//mode=0일 때
                if(code.charAt(i)!='1'){
                     if(i%2==0){
-                        answer+=code.charAt(i);//mode=0+짝수 -> 추
+                        answer+=code.charAt(i);//mode=0+짝수 -> 추가
                     }
                 }else if(code.charAt(i)=='1'){//code가 1일 때
                     mode=1;//code=1 -> mode=0에서 1로 바꿈
