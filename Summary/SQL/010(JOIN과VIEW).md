@@ -45,11 +45,11 @@
 
 SELECT column_name1,column_name
 FROM TABLE A (INNER) JOIN TABLE B
-ON TABLEA.조인컬럼 = TABLEB.조인컬럼
+ON TABLE_A.조인컬럼 = TABLE_B.조인컬럼
 
 SELECT column_name1,column_name
 FROM TABLE A , TABLE B
-WHERE TABLEA.조인컬럼 = TABLE_B.조인컬럼
+WHERE TABLE_A.조인컬럼 = TABLE_B.조인컬럼
 
 *엔티티를 보고 겹치는 부분 확인한 후에 JOIN 하기
 6. PK와 FK로 연결되어 있는 테이블끼리 JOIN 가능함
@@ -96,7 +96,7 @@ WHERE TABLEA.조인컬럼 = TABLE_B.조인컬럼
 ```SQL
 SELECT column_name1,column_name
 FROM TABLE A LEFT OUTER JOIN TABLE B
-ON TABLEA.조인컬럼 = TABLEB.조인컬럼
+ON TABLE_A.조인컬럼 = TABLE_B.조인컬럼
 ```
 
 ### RIGHT OUTER JOIN
@@ -107,7 +107,7 @@ ON TABLEA.조인컬럼 = TABLEB.조인컬럼
 ```SQL 
 SELECT column_name1,column_name
 FROM TABLE A RIGHT OUTER JOIN TABLE B
-ON TABLEA.조인컬럼 = TABLEB.조인컬럼
+ON TABLE_A.조인컬럼 = TABLE_B.조인컬럼
 ```
 
 ### FULL OUTER JOIN
@@ -119,7 +119,7 @@ ON TABLEA.조인컬럼 = TABLEB.조인컬럼
 ```SQL 
 SELECT column_name1,column_name
 FROM TABLE A FULL OUTER JOIN TABLE B
-ON TABLEA.조인컬럼 = TABLEB.조인컬럼
+ON TABLE_A.조인컬럼 = TABLE_B.조인컬럼
 ```
 
 # VIEW
