@@ -173,4 +173,23 @@
 
 ## SQL실행순서
 
-1. 
+1. FROM and JOIN
+2. WHERE
+3. GROUP BY
+4. HAVING
+5. SELECT
+6. ORDER BY
+7. LIMIT
+
+### 예시
+
+A테이블을 로딩
+->JOIN과 FROM을 같이 진행, JOIN이 없으면 FROM만 진행
+->WHERE 선행조건
+->GROUP BY는 조건을 걸기 전이 아닌 후에 함
+->집계 속성에 조건걸고 싶으면 HAVING
+->SELECT(데이터를 뽑아놓고)
+->순서가 엉킴
+->ORDER BY(정렬)
+->LIMIT(top10)
+->보여주기
