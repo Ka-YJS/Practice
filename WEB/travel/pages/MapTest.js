@@ -11,7 +11,7 @@ const MapComponent = () => {
     const [selectedMarker, setSelectedMarker] = useState(null); // 선택된 마커
     const [photoUrl, setPhotoUrl] = useState(null); // 장소 사진 URL
 
-    const apiKey = "AIzaSyDdfuKZuF0IpsUtjlx_Syh-gmJhCE70t-8"; // Google Maps API 키
+    const apiKey = ""; // Google Maps API 키
 
     // 지도 스타일
     const mapContainerStyle = {
