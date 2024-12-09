@@ -9,7 +9,7 @@
 3. 변경에 유리한 코드2 - Map과 외부파일(이론) : key = value를 사용, Object를 이용하면 형변환 필요 없음
 4. 객체 컨테이너(ApplicationContext)만들기
 	- 스프링부트에서 사용함
-	- ApplicationCeontext -> 객체 저장소라고 함 : 클래스 안에 Map으로 객체를 저장함
+	- ApplicationContext -> 객체 저장소라고 함 : 클래스 안에 Map으로 객체를 저장함
 	- AppContext라는 클래스 생성 -> map이라는 객체저장소를 만듦 -> AppContext( )라는 생성자를 정의함
 	<br>->new생성자를 통한 객체 생성과 저장 -> key를 매개변수로 전달 -> key에 담겨있는 value 즉, 객체를 반환 -> 저장된 내용을 Map에 저장
 5. 객체 자동 등록하기
