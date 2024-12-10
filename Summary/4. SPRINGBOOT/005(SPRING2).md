@@ -276,75 +276,52 @@ Content-Length : 17
 
 # JPA
 
-1)자바에서 객체와 관계형 데이터베이스 간의 데이터를 매핑(ORM: Object-Relational Mapping)하기 위한 표준 API임
-
-2)JPA는 자바 객체를 데이터베이스의 테이블과 매핑하고, 데이터베이스의 데이터를 자바 객체로 변환하여 쉽게 다룰 수 있게 해줌
-
-3)이를 통해 개발자는 데이터베이스의 세부 사항에 구애받지 않고 객체 지향적으로 데이터베이스를 처리할 수 있음
-
-4)주요 개념 : ORM(Object-Relation Mapping), Persistence Context, Entity
-
-5)ORM(Object-Relation Mapping)
+1. 자바에서 객체와 관계형 데이터베이스 간의 데이터를 매핑(ORM: Object-Relational Mapping)하기 위한 표준 API임
+2. JPA는 자바 객체를 데이터베이스의 테이블과 매핑하고, 데이터베이스의 데이터를 자바 객체로 변환하여 쉽게 다룰 수 있게 해줌
+3. 이를 통해 개발자는 데이터베이스의 세부 사항에 구애받지 않고 객체 지향적으로 데이터베이스를 처리할 수 있음
+4. 주요 개념 : ORM(Object-Relation Mapping), Persistence Context, Entity
+5. ORM(Object-Relation Mapping)
   - JPA는 자바 객체와 데이터베이스의 테이블을 매핑함
-  - 자바 객체를 데이터베이스의 테이블로, 객체의 필드를 테이블의 컬럼으로 매핑함으로써, 
-  객체 지향적인 방식으로 데이터베이스 작업을 수행할 수 있음
-  - 예를 들어, 데이터베이스의 사용자 테이블을 User 객체와 매핑할 수 있으며, 
-  데이터베이스에 쿼리를 작성하지 않고도 자바 코드로 데이터를 처리할 수 있음
-
-6)Persistence Context
+  - 자바 객체를 데이터베이스의 테이블로, 객체의 필드를 테이블의 컬럼으로 매핑함으로써, 객체 지향적인 방식으로 데이터베이스 작업을 수행할 수 있음
+  - 예를 들어, 데이터베이스의 사용자 테이블을 User 객체와 매핑할 수 있으며, 데이터베이스에 쿼리를 작성하지 않고도 자바 코드로 데이터를 처리할 수 있음
+6. Persistence Context
   - JPA에서 엔티티(Entity) 객체를 관리하는 일종의 캐시 역할을 함
   - 이 컨텍스트를 통해 엔티티 객체를 추적하고, 변경된 내용을 자동으로 데이터베이스에 반영함
   - JPA는 객체를 영속성 컨텍스트에서 관리하고, 이를 통해 트랜잭션 내에서 데이터베이스 작업을 처리함
-
-7)Entity
+7. Entity
   - JPA에서 관리되는 자바 객체를 **엔티티(Entity)**라고 함
   - 엔티티 클래스는 데이터베이스의 테이블과 매핑되며, 객체의 속성은 테이블의 컬럼과 매핑됨
   - 엔티티 클래스는 @Entity 애노테이션을 통해 정의됨
 
 
+## Spring Data JPA
 
-16. Spring DAta JPA
-
-1)Spring Data 프로젝트의 일부로, **JPA(Java Persistence API)**를 쉽게 사용할 수 있도록 도와주는 
-  Spring 기반의 데이터 액세스 프레임워크임
-
-2)Spring Data JPA는 Repository 패턴을 기반으로 하여, 데이터베이스와 상호작용할 때 개발자가 반복적으로 
-  작성해야 하는 코드들을 자동으로 처리해줌
-
-3)주요특징 : Repository 기반 데이터 액세스, 자동화된 CRUD 작업, 쿼리 메서드(Query Method)
-
-4)Repository 기반 데이터 액세스
+1. Spring Data 프로젝트의 일부로, **JPA(Java Persistence API)**를 쉽게 사용할 수 있도록 도와주는 Spring 기반의 데이터 액세스 프레임워크임
+2. Spring Data JPA는 Repository 패턴을 기반으로 하여, 데이터베이스와 상호작용할 때 개발자가 반복적으로 작성해야 하는 코드들을 자동으로 처리해줌
+3. 주요특징 : Repository 기반 데이터 액세스, 자동화된 CRUD 작업, 쿼리 메서드(Query Method)
+4. Repository 기반 데이터 액세스
   - Spring Data JPA는 Repository 인터페이스를 기반으로 데이터베이스에 접근함
-  - 이 인터페이스를 확장함으로써 복잡한 데이터 액세스 코드를 작성하지 않고도 
-  CRUD(Create, Read, Update, Delete) 작업을 자동으로 처리할 수 있음
-
-5)자동화된 CRUD 작업
+  - 이 인터페이스를 확장함으로써 복잡한 데이터 액세스 코드를 작성하지 않고도 CRUD(Create, Read, Update, Delete) 작업을 자동으로 처리할 수 있음
+5. 자동화된 CRUD 작업
   - Spring Data JPA는 기본적인 CRUD 메서드를 자동으로 제공함
   - findAll( ), save( ), delete( )와 같은 메서드를 별도의 구현 없이 바로 사용할 수 있음
-
-6)쿼리 메서드(Query Method)
+6. 쿼리 메서드(Query Method)
   - JPA 쿼리 메서드를 작성할 때 메서드 이름만으로 SQL 쿼리를 자동 생성할 수 있음
   - 메서드 이름을 분석하여 해당 메서드에 맞는 SQL 문을 실행함
   - 예를 들어, findByUsername(String username) 메서드는 자동으로 SELECT * FROM User WHERE username = ? 쿼리를 실행함
 
 
+### 실습
 
-17. 실습
-
-1)스프링이 Bean을 만들어서 저장함 -> 사용자는 만들어진 Bean을 사용함
-
-2)객체를 계속 만드는 것이 아닌, 한번 만들어진 객체를 계속 하는 것 -> 싱글톤 패턴
-
-3)스프링에서 Bean으로 만드는 것들은 다 싱글톤으로 만들어짐
-
-4)메모리에 딱 한번만 올라가게 되고, 우리는 만들어진 것을 사용함
-
-5)서비스 개발 실습
+1. 스프링이 Bean을 만들어서 저장함 -> 사용자는 만들어진 Bean을 사용함
+2. 객체를 계속 만드는 것이 아닌, 한번 만들어진 객체를 계속 하는 것 -> 싱글톤 패턴
+3. 스프링에서 Bean으로 만드는 것들은 다 싱글톤으로 만들어짐
+4. 메모리에 딱 한번만 올라가게 되고, 우리는 만들어진 것을 사용함
+5. 서비스 개발 실습
   - POST로 요청했을 때 CREATE PEST API 개발
   - GET으로 요청했을 때 RETRIEVE(검색) REST API 개발
   - UPDATE로 요청했을 때 UPDATE REST API 개발
   - DELETE로 요청했을 때 DELETE REST API 개발
-
-6)영속계층 -> 서비스계층 -> 표현계층 순으로 구현
+6. 영속계층 -> 서비스계층 -> 표현계층 순으로 구현
 
 
