@@ -1,32 +1,36 @@
-1)컴포넌트를 호출할 때
-1>속성명=문자열,숫자,{변수,객체,함수}의 형태로 전달함
-2>해당함수에서 매개변수에 할당됨
-3>
-<Comp title='제목' />
+# React복습
 
-const Comp = (props 혹은 { title }) => { 
-	console.log(props) -> { "title" : "제목", "kye" : "value" }
-	혹은 console.log(title)
- }
+## 컴포넌트
 
-2)state
-1>사용하는 이유
--UI업데이트의 자동화
--state가 변경될 때마다 재렌더링을해서 직접 dom조작 할 필요가 없음
-2>컴포넌트와 데이터의 일관성 유지
--고유한 state를 통해 자신만의 데이터를 독립적으로 관리할 수 있음
-3>비동기데이터와 상태 변화 처리
--setter함수는 비동기로 작동함
--연속적으로 setter함수를 호출할 경우 예상치 못한 결과가 나올 수 있음
--이전 상태를 기준으로 다음상태를 설정할 때는 콜백함수를 이용하는 것이 좋음
--ex.
-setCount(( count+1 ))
-setCount(( count+1 )) -> 예상치 못한 결과가 나올 수 있음
+1. 컴포넌트를 호출할 때
+	- 속성명=문자열,숫자,{변수,객체,함수}의 형태로 전달함
+	- 해당함수에서 매개변수에 할당됨
+	- 예시
+	```JS
+	<Comp title='제목' />
 
-setCount(preventCount => preventCount +1 )
-setCount(preventCount => preventCount +1 ) -> 콜백함수를 이용
+	const Comp = (props 혹은 { title }) => { 
+		console.log(props) -> { "title" : "제목", "kye" : "value" }
+		혹은 console.log(title)
+	}
+	```
+2. state
+	1. 사용하는 이유
+		- UI업데이트의 자동화
+		- state가 변경될 때마다 재렌더링을해서 직접 dom조작 할 필요가 없음
+	2. 컴포넌트와 데이터의 일관성 유지 : 고유한 state를 통해 자신만의 데이터를 독립적으로 관리할 수 있음
+	3. 비동기데이터와 상태 변화 처리
+		- setter함수는 비동기로 작동함
+		- 연속적으로 setter함수를 호출할 경우 예상치 못한 결과가 나올 수 있음
+		- 이전 상태를 기준으로 다음상태를 설정할 때는 콜백함수를 이용하는 것이 좋음
+		- 예시
+		```JS
+		setCount(( count+1 ))
+		setCount(( count+1 )) -> 예상치 못한 결과가 나올 수 있음
 
-
+		setCount(preventCount => preventCount +1 )
+		setCount(preventCount => preventCount +1 ) -> 콜백함수를 이용
+		```
 
 2. 스타일링
 
