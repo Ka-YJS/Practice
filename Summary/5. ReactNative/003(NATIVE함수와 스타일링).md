@@ -205,3 +205,16 @@ const 컴포넌트명 = styled.View`
 	```
 	- target : 속성을 복사할 대상 객체
 	- source : 속성을 복사할 하나 이상의 원본 객체들
+
+headerMode
+headerMode는 Stack.Navigator에서 모든 화면의 헤더가 표시되는 방식을 설정한다.
+headerMode에는 다음과 같은 세 가지 설정 값이 있다
+screen: 각 화면마다 개별적으로 헤더가 나타난다. 화면이 전환될 때마다 새로운 헤더가 렌더링된다. 화면 전환 시 이전 화면의 헤더가 사라지고, 새 화면의 헤더가 나타나는 방식이다.
+float : 헤더가 모든 화면을 관통하여 부드럽게 애니메이션되며, 화면 간의 전환 시 부드러운 전환 효과가 있다. 두 화면 간 전환 시 헤더는 이동하지 않고 그대로 유지되는 느낌을 준다.
+none: 헤더를 표시하지 않는다. 모든 화면에서 헤더가 사라지며, 이를 통해 전체 화면을 사용하거나 커스텀 헤더를 구현할 수 있다.
+
+headerShown
+headerShown은 각 Screen에 대해 헤더를 개별적으로 표시할지 여부를 설정하는 옵션이다.
+headerShown 옵션은 true 또는 false 값을 가진다.
+headerShown: false로 설정하면 특정 화면에서 헤더가 표시되지 않는다. 이 옵션을 통해 특정 화면에서만 헤더를 숨길 수 있다.
+<Stack.Screen name="Home" component={Home} options={{headerShown:false}}/>
