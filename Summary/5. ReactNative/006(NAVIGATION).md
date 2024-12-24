@@ -88,23 +88,23 @@ npm install @react-navigation/drawer@6.7.2
         - 네비게이터가 처음 시작될 때 표시될 기본 화면을 지정함
         - "Home"을 설정하면 Drawer 네비게이션이 처음 열릴 때 Home 화면이 기본으로 나타남
 2. screenOptions에 쓸 수 있는 속성
-1. drawerPosition
-    - Drawer가 나타나는 위치를 설정함
-    - 기본값은 "left"이며, "right"로 설정하면 오른쪽에서 나온다.
-2. drawerType
-Drawer가 열릴 때의 애니메이션 방식과 형태를 설정함
-front: Drawer가 앞쪽에 표시됨
-back: Drawer가 뒤쪽에 고정된 상태로, 본문이 위로 이동함
-slide: Drawer가 왼쪽이나 오른쪽에서 슬라이드로 나타남 화면도 같이 밀린다.
-permanent: Drawer가 항상 화면에 고정되어 있음
-3. drawerStyle
-Drawer의 스타일을 설정하는 옵션임
-backgroundColor: Drawer 메뉴의 배경 색상을 지정함
-width: Drawer의 너비를 설정함기본적으로 화면에서 Drawer가 차지하는 공간의 크기를 픽셀 단위로 조정함
-height: Drawer의 높이를 설정함 기본적으로 Drawer는 화면 높이를 전부 차지하지만, 특정 높이만큼만 Drawer를 나타내고 싶을 때 유용함
-borderWidth: Drawer의 테두리 두께를 설정함
-borderColor: Drawer의 테두리 색상을 지정함
-3. drawerLabelStyle
-Drawer 메뉴의 라벨 텍스트 스타일을 설정함
-fontSize: 각 메뉴 항목의 글꼴 크기를 설정할 수 있음
+    1. drawerPosition
+        - Drawer가 나타나는 위치를 설정함
+        - 기본값은 "left"이며, "right"로 설정하면 오른쪽에서 나온다.
+    2. drawerType
+        - Drawer가 열릴 때의 애니메이션 방식과 형태를 설정함
+        - front: Drawer가 앞쪽에 표시됨
+        - back: Drawer가 뒤쪽에 고정된 상태로, 본문이 위로 이동함
+        - slide: Drawer가 왼쪽이나 오른쪽에서 슬라이드로 나타남 화면도 같이 밀림
+        - permanent: Drawer가 항상 화면에 고정되어 있음
+    3. drawerStyle
+        - Drawer의 스타일을 설정하는 옵션임
+        - backgroundColor: Drawer 메뉴의 배경 색상을 지정함
+        - width: Drawer의 너비를 설정함기본적으로 화면에서 Drawer가 차지하는 공간의 크기를 픽셀 단위로 조정함
+        - height: Drawer의 높이를 설정함 기본적으로 Drawer는 화면 높이를 전부 차지하지만, 특정 높이만큼만 Drawer를 나타내고 싶을 때 유용함
+        - borderWidth: Drawer의 테두리 두께를 설정함
+        - borderColor: Drawer의 테두리 색상을 지정함
+    4. drawerLabelStyle
+        - Drawer 메뉴의 라벨 텍스트 스타일을 설정함
+        - fontSize: 각 메뉴 항목의 글꼴 크기를 설정할 수 있음
 
