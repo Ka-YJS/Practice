@@ -56,9 +56,9 @@ public class UserEntity {
 	- 명확하게 테이블이름을 지정함으로써 충돌방지
 	- 클래스이름과 실제DB테이블이름 다르게 설정가능
 
-	|클래스이름|UserEntity|
+	|클래스이름|실제DB테이블이름|
 	|---|---|
-	|실제DB테이블이름|users|
+	|UserEntity|users|
 
 3. @Entity : JPA 엔티티임을 선언
 	- Java에 코드를 적었을 때, DB테이블을 자동으로 만들어줌 -> 쿼리 직접 작성하지않아도 됨
@@ -83,6 +83,46 @@ public class UserEntity {
 	);
 	```
 4. @Builder : Lombok의 빌더 패턴 구현
+
+#### Builder 패턴
+
+- Builder클래스를 따로 개발하지 않고도 Builder패턴을 사용해 객체를 생성할 수 있음
+- 빌더패턴을 구현할 때의 장점
+<br>->선택적 매개변수 처리가 쉬움, 가독성이 좋음, 불변성 보장, 유효성 검사 수행 가능
+
+- 예시
+```JAVA
+//일반적인 User 클래스
+public class User {
+    private final Long id;
+    private final String userId;
+}
+// private 생성자
+private User(UserBuilder builder) {
+    this.id = builder.id;
+    this.userId = builder.userId;
+}
+```
+->위처럼 코드가 있을 때, Builder클래스를 작성하면 아래와 같음
+```JAVA
+public static class UserBuilder {
+    private final Long id;
+    private final String userId;
+
+	public UserBuilder() {}
+
+	public UserBuilder id(Long id) {
+            this.id = id;
+            return this;
+    }
+	public UserBuilder userId(String userId) {
+            this.userId = userId;
+            return this;
+    }
+}
+```
+->public UserBuilder() {} : 단순히 UserBuilder 클래스의 인스턴스를 생성하기 위한 빈 생성자로 User 객체를 만들기위한 과정임
+
 5. @AllArgsConstructor : Lombok의 모든 필드를 매개변수로 받는 생성자
 6. @NoArgsConstructor : Lombok의 매개변수 없는 기본 생성자
 7. @OneToMany
