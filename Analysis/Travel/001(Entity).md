@@ -74,7 +74,7 @@ public class UserEntity {
     private String email; //테이블의 email 컬럼과 매핑
 	}
 	```
-	<br>-> 위와같은 코드가 적히면 아래와같은 DB테이블을 자동으로 생성
+	-> 위와같은 코드가 적히면 아래와같은 DB테이블을 자동으로 생성
 	```SQL
 	CREATE TABLE user (
     id BIGINT PRIMARY KEY,
