@@ -272,13 +272,13 @@ public class UserService {
             		userProfileImage(userEntity.getUserProfileImage())
             		.build();
             
-        } catch (IOException e) {
-            //파일 저장 오류 처리
-            throw new RuntimeException("프로필이미지 업로드 중 오류가 발생했습니다.", e);
-        } catch (Exception e) {
-            //다른 예외 처리
-            throw new RuntimeException("프로필이미지 수정 중 오류가 발생했습니다.", e);
-        }
+			} catch (IOException e) {
+				//파일 저장 오류 처리
+				throw new RuntimeException("프로필이미지 업로드 중 오류가 발생했습니다.", e);
+			} catch (Exception e) {
+				//다른 예외 처리
+				throw new RuntimeException("프로필이미지 수정 중 오류가 발생했습니다.", e);
+			}
     }
 
     
@@ -368,7 +368,10 @@ public class UserService {
 	- Lombok의 어노테이션으로, final로 선언된 필드들에 대한 생성자를 자동으로 생성
 	- 생성자 주입 방식의 의존성 주입을 위해 사용됨
 	- final이나 @NonNull이 붙은 필드에 대한 생성자를 자동으로 생성해줌
-4. @Transactional
+4. @Transactional : 데이터베이스 트랜잭션의 원자성(Atomicity)을 보장하며, 트랜잭션 관리를 위해 매우 중요한 어노테이션임
+	- 메서드의 전체 작업을 하나의 트랜잭션으로 관리
+	- 메서드 실행 중 예외 발생 시 자동으로 데이터베이스 변경 내용을 RollBack
+	- 데이터의 일관성과 무결성 보장
 
 ## 코드설명
 
@@ -402,13 +405,69 @@ private final TokenProvider tokenProvider;
 	- dto.getUserId() : UserDTO에서 가져온 userId값을 가져옴
 	- repository.existsByUserId : UserRepository에서 생성한 existsByUserId를 가져옴
 ```JAVA
+//구글 로그인정보가져오기
+public UserDTO verifyAndGetUserInfo(String credential) throws Exception {
+    String tokenInfoUrl = "https://oauth2.googleapis.com/tokeninfo?id_token=" + credential;
+    System.out.println("ssssssssssss"+tokenInfoUrl);
+    RestTemplate restTemplate = new RestTemplate();
+    ResponseEntity<Map> response = restTemplate.getForEntity(tokenInfoUrl, Map.class);
+    System.out.println(response);
+    if (response.getStatusCode() != HttpStatus.OK) {
+        throw new Exception("Invalid ID token");
+    }
+    System.out.println("ssssssssssss"+response.getBody());
+    Map<String, Object> tokenInfo = response.getBody();
+    String email = (String) tokenInfo.get("email");
+    String name = (String) tokenInfo.get("name");
 
+	// Google 정보를 UserDTO에 매핑
+	UserDTO userDTO = UserDTO.builder()
+	    .userId(email)                // 이메일을 UserId로 설정
+	    .userName(name)               // 이름 설정
+	    .build();
+	return userDTO;
+}
 ```
+1. public UserDTO verifyAndGetUserInfo(String credential) throws Exception
+	- 구글 로그인 ID 토큰(credential)을 받아 사용자 정보를 검증하고 가져오는 메서드
+	- 예외발생 가능성이 있어 throw Exception을 선언함
+2. RestTemplate restTemplate = new RestTemplate();
+	- Spring의 HTTP 요청을 간편하게 처리하는 클래스 생성
+	- RESTful 웹 서비스와 통신하기 위해 사용
+	<br>*RESTful 웹 서비스란? 
+	- Representational State Transfer(REST) 아키텍처 원칙을 따르는 웹 서비스를 의미
+	- HTTP 메서드(GET, POST, PUT, DELETE 등)를 통해 해당 자원을 처리
+3. ResponseEntity<Map> response = restTemplate.getForEntity(tokenInfoUrl, Map.class);
+	- 구글 토큰 정보 엔드포인트로 GET 요청 -> 응답은 Map형태로 받음
+	- ResponseEntity : HTTP 응답 전체(상태 코드, 헤더, 본문 등)를 포함함
+4. String ?? = (String) tokenInfo.get("??"); : 토큰정보에서 사용자이름 추출
 
 ```JAVA
-
+try {
+	...
+    } catch (IOException e) {
+	//파일 저장 오류 처리
+	throw new RuntimeException("프로필이미지 업로드 중 오류가 발생했습니다.", e);
+	} catch (Exception e) {
+	//다른 예외 처리
+	throw new RuntimeException("프로필이미지 수정 중 오류가 발생했습니다.", e);
+	}
 ```
+1. Exception
+	- 모든 예외의 부모 클래스로 컴파일 시점에 확인 가능한 예외
+	- 반드시 예외 처리가 필요 (try-catch 또는 throws)
+	- 프로그램의 복구가 가능한 예외
+2. IOException
+	- Exception의 자식 클래스로 주로 입출력(I/O) 작업 중 발생하는 예외를 보여줌
+	- 파일, 네트워크, 데이터베이스 등 외부 리소스 관련 예외
 
 ```JAVA
-
+UserEntity userEntity = repository.findById(id)
+    .orElseThrow(() -> new IllegalArgumentException("User not found"));
 ```
+1. orElseThrow() : Optional 클래스의 메서드로, 값이 존재하지 않을 때 지정된 예외를 던지는 메서드
+2. IllegalArgumentException
+	- 메서드의 입력 값이 논리적으로 맞지 않을 때 사용하는 중요한 예외 처리 메커니즘
+	- 메서드에 잘못된 인자(argument)가 전달될 때 발생하는 런타임 예외
+	- 런타임 예외(Unchecked Exception)로 컴파일 시점에 확인되지 않음
+	- 명확하고 구체적인 오류 메시지 제공하며, 유효성 검사를 통해 메서드의 안정성을 확보함
