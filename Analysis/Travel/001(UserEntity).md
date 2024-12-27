@@ -44,6 +44,11 @@ public class UserEntity {
 }
 ```
 
+## Entity란?
+
+- 데이터베이스의 테이블을 나타내는 클래스를 의미함
+- 데이터베이스에 쓰일 필드와 여러 엔티티간 연관관계를 정의하는 역할을 함
+
 ## Annotation
 
 1. @Data : Lombok에서 getter, setter, toString 등 자동생성
