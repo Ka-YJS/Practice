@@ -88,9 +88,26 @@ public class UserEntity {
 
 - Builder클래스를 따로 개발하지 않고도 Builder패턴을 사용해 객체를 생성할 수 있음
 - 빌더패턴을 구현할 때의 장점
-<br>->선택적 매개변수 처리가 쉬움, 가독성이 좋음, 불변성 보장, 유효성 검사 수행 가능
 
-- 예시
+<table border="1">
+    <tr>
+        <td>선택적 매개변수 처리가 쉬움</td>
+        <td>선택적 매개변수는 메서드 체이닝 방식으로 유연하게 설정할 수 있어 객체 생성 시 편리함(원하는 값을 순서상관없이 불러올 수 있음)<br>*메서드 체이닝 : 여러 메서드를 한 줄의 코드에서 연속적으로 호출할 수 있는 방식으로 각 메서드가 객체 자신을 반환하도록 설계되어, 호출된 메서드가 끝난 후 바로 다음 메서드를 호출할 수 있게 만듦</td>
+    </tr>
+    <tr>
+        <td>가독성이 좋음</td>
+        <td>모든 설정을 하나의 "빌더" 객체에서 처리하므로 매개변수가 많더라도 가독성을 유지할 수 있음</td>
+    </tr>
+    <tr>
+        <td>불변성 보장</td>
+        <td>-생성자가 아닌 빌더를 통해 객체를 생성하면, 생성된 객체는 불변 객체로 만들 수 있<br>-객체가 생성된 후에는 필드값을 변경할 수 없게 만들 수 있기 때문에, 객체가 생성된 이후에는 상태가 변하지 않음<br>->빌더 클래스 내부에서 객체를 초기화하고, build() 메서드를 통해 완전한 객체를 반환하게 되어, 이후 객체의 상태를 변경할 수 없기때문임</td>
+    </tr>
+    <tr>
+        <td>유효성 검사 수행 가능</td>
+        <td>-잘못된 데이터로 객체가 생성되는 것을 방지할 수 있음<br>-객체를 생성할 때 모든 필드를 검증하여, 유효하지 않은 값이 들어가면 예외를 발생시키거나, 잘못된 객체가 생성되지 않도록 할 수 있음</td>
+    </tr>
+
+- builder패턴의 예시
 ```JAVA
 //일반적인 User 클래스
 public class User {
@@ -124,5 +141,21 @@ public static class UserBuilder {
 ->public UserBuilder() {} : 단순히 UserBuilder 클래스의 인스턴스를 생성하기 위한 빈 생성자로 User 객체를 만들기위한 과정임
 
 5. @AllArgsConstructor : Lombok의 모든 필드를 매개변수로 받는 생성자
+	- 생성자를 직접 작성할 필요가 없어서 코드가 더 간결하고 읽기 쉬워짐
+	- 모든 필드를 초기화하는 생성자를 자동으로 제공하므로 객체 생성 시 실수를 방지하고, 코드의 일관성을 유지할 수 있음
+	- Lombok을 사용하면 생성자 외에도 toString(), equals(), hashCode() 등 여러 메서드를 자동으로 생성할 수 있기 때문에 객체를 다룰 때 더 유연하게 대응할 수 있음
 6. @NoArgsConstructor : Lombok의 매개변수 없는 기본 생성자
-7. @OneToMany
+	- 기본 생성자를 수동으로 작성할 필요가 없음 -> 객체를 기본값으로 초기화할 때 사용함
+	- 기본 생성자를 사용하여 객체를 나중에 설정할 수 있는 유연성을 제공함
+	- Java Bean 규약을 준수함
+	<br>-> Java Bean 규약 : 기본생성자를 가짐, getter&setter사용, Serializable(직렬화)인터페이스구현, private사용 
+7. @OneToMany : 일대다 관계, 하나의 Entity가 여러 개의 다른 Entity와 관계를 맺음
+
+## 코드설명
+
+1. 
+```JAVA
+@OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+private List<PostEntity> post = new ArrayList<>();
+```
+- mappedBy = "userEntity" : 
