@@ -153,9 +153,23 @@ public static class UserBuilder {
 
 ## 코드설명
 
-1. 
 ```JAVA
 @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 private List<PostEntity> post = new ArrayList<>();
 ```
-- mappedBy = "userEntity" : 
+1. mappedBy = "userEntity"
+	- mappedBy : 양방향 관계에서 자식 엔티티에서 부모 엔티티의 필드를 지정하는 속성
+	- "userEntity" : PostEntity 클래스에서 부모 엔티티인 UserEntity와의 관계를 나타내는 필드 이름
+2. cascade = CascadeType.ALL
+	- cascade : 부모 엔티티에서 수행된 영속성 연산(저장, 삭제 등)이 자식 엔티티에도 전이되는 방식
+	- CascadeType.ALL : 모든 연산(저장, 삭제, 업데이트 등)을 자식 엔티티로 전이됨
+	<br>-> 부모 엔티티(UserEntity)에 대해 persist(), merge(), remove() 등의 작업이 수행되면 자식 엔티티(PostEntity)에도 동일한 작업이 적용됨
+3. orphanRemoval = true
+	- orphanRemoval : 부모 엔티티에서 자식 엔티티를 제거할 때, 자식 엔티티가 더 이상 부모와 관계가 없을 경우 자식엔티티를 자동으로 삭제되도록 하는 옵션
+	- true : 
+4. fetch = FetchType.LAZY
+	- fetch : JPA에서 연관된 엔티티의 데이터를 로딩하는 방식을 지정하는 속성으로 지연로딩과 즉시로딩 중 하나를 선택할 수 있음 -> 관계 매핑에서 사용됨
+	- FetchType.LAZY : 지연 로딩(Lazy Loading)을 사용하도록 설정하는 옵션
+	<br>*지연 로딩은 객체를 실제로 사용할 때까지 데이터를 로드하지 않도록 설정하는 방식
+	<br>-> UserEntity를 조회할 때 관련된 PostEntity 객체들은 즉시 로딩되지 않고, user.getPosts()를 호출할 때, PostEntity들이 실제로 로드됨(필요할때만 로딩)
+5. private List<PostEntity> post = new ArrayList<>();
