@@ -31,14 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UserService {
 	
-	private final UserRepository repository;
-	
+	private final UserRepository repository;	
 	private final PasswordEncoder passwordEncoder;
-	
 	private final TokenProvider tokenProvider;
-	
-	
-	
 	
 	//userId가 있는지 중복체크
 	public boolean getUserIds(UserDTO dto) {
@@ -48,10 +43,8 @@ public class UserService {
 			return true;
 		}else{
 			return false;
-		}
-		
-	}
-	
+		}		
+	}	
 	
 	//회원가입
 	public boolean signup(UserDTO dto) {
@@ -70,42 +63,38 @@ public class UserService {
 			return true;
 		}else {
 			return false;
-		}
-		
-		
+		}				
 	}
 	
-	
 	//Id찾기
-   public UserDTO userFindId(UserDTO dto) {
+	public UserDTO userFindId(UserDTO dto) {
       
-      UserEntity user = repository.findByUserName(dto.getUserName());
-      if(user != null && user.getUserPhoneNumber().equals(dto.getUserPhoneNumber())) {
-         return UserDTO.builder()
+		UserEntity user = repository.findByUserNameAndUserPhoneNumber(dto.getUserName(),dto.getUserPhoneNumber());
+		if(user != null) {
+			return UserDTO.builder()
                .userId(user.getUserId())
                .build();
-      }else {
-          throw new IllegalStateException("User not found");
-      }
-   }
+		}else {
+			throw new IllegalStateException("User not found");
+		}
+	}
    
-   // 비밀번호 찾기 (사용자 정보 확인)
+	// 비밀번호 찾기 (사용자 정보 확인)
     public UserDTO userFindPassword(UserDTO dto) {
         // 아이디, 이름, 전화번호로 사용자 조회
         UserEntity user = repository.findByUserIdAndUserNameAndUserPhoneNumber(
             dto.getUserId(), 
             dto.getUserName(), 
             dto.getUserPhoneNumber()
-        );
-        
+        );       
         if (user != null) {
             return UserDTO.builder()
                 .userId(user.getUserId())
                 .userName(user.getUserName())
                 .build();
-        }
-        
-        return null;
+        }else {
+        	return null;
+        }        
     }
 
     // 비밀번호 초기화
@@ -122,8 +111,7 @@ public class UserService {
         }
         
         return false;
-    }
-	
+    }	
 	
 	//로그인(로그인할때 토큰생성)
 	public UserDTO getByCredentials(UserDTO dto) {
@@ -146,17 +134,16 @@ public class UserService {
 				.build();
 		}else {
 			return null;
-		}
-		
-	}
-	
+		}		
+	}	
 	
 	//구글 로그인정보가져오기
 	public UserDTO verifyAndGetUserInfo(String credential) throws Exception {
 	    String tokenInfoUrl = "https://oauth2.googleapis.com/tokeninfo?id_token=" + credential;
+	    System.out.println("ssssssssssss"+tokenInfoUrl);
 	    RestTemplate restTemplate = new RestTemplate();
 	    ResponseEntity<Map> response = restTemplate.getForEntity(tokenInfoUrl, Map.class);
-
+	    System.out.println(response);
 	    if (response.getStatusCode() != HttpStatus.OK) {
 	        throw new Exception("Invalid ID token");
 	    }
@@ -170,10 +157,8 @@ public class UserService {
 	        .userId(email)                // 이메일을 UserId로 설정
 	        .userName(name)               // 이름 설정
 	        .build();
-
 	    return userDTO;
-	}
-	
+	}	
 	
 	//userPassword 수정하기
 	public boolean userPasswordEdit (Long id,UserDTO dto) {
@@ -200,15 +185,12 @@ public class UserService {
 				//user 비밀번호랑 받아온 비밀번호랑 다르면 false
 				System.out.println("비밀번호 틀림");
 				return false;
-			}
-			
+			}			
 		} else {
 			//user 존재하지않으면 false
 			return false;
-		}
-		
-	}
-		
+		}		
+	}		
 	
 	//userNickName 수정하기
     public UserDTO userNickNameEdit(Long id,UserDTO dto) {
@@ -228,11 +210,9 @@ public class UserService {
 		} else {
 			System.out.println("유저가 존재하지않거나 닉네임이 같다");
 			return null;
-		}    	
-    	
+		}    	   	
     }
-    
-    
+       
     //프로필사진 수정
     public UserDTO userProfileImageEdit(Long id, MultipartFile file) {
     	
@@ -327,8 +307,7 @@ public class UserService {
             return true;
         }else {
         	throw new IllegalArgumentException("프로필 사진이 없습니다.");
-        }
-        
+        }        
     }
     
     
@@ -349,8 +328,7 @@ public class UserService {
     		return true;
     	}else {
     		return false;
-    	}
-    	
+    	}    	
     }
     
     
@@ -365,16 +343,72 @@ public class UserService {
     		return true;    		
     	}else {
 			return false;
-		}
-    	
-    }
-    
-    
+		}   	
+    }    
 }
 
 ```
 
+## Service란?
+
+- Controller 와 Repository사이에서 동작하며, 비즈니스규칙을 구현하고, 트랜잭션을 관리함
+- 여러 Repository를 조합해서 사용할 수 있음
+- Controller에서는 클라이언트의 요청을 처리하고, 실질적인 기능은 Service에서 한다고 볼 수 있음
+
 
 ## Annotation
 
+1. @Service
+	- 이 클래스가 비즈니스 로직을 처리하는 Service 계층임을 Spring에게 알려줌
+	- Spring의 컴포넌트 스캔 대상이 되어 자동으로 Bean으로 등록됨
+2. @Slf4j
+	- Lombok의 어노테이션으로, 로깅을 위한 Logger를 자동으로 생성
+	- log.info(), log.error() 등의 로깅 메서드를 바로 사용 가능
+3. @RequiredArgsConstructor
+	- Lombok의 어노테이션으로, final로 선언된 필드들에 대한 생성자를 자동으로 생성
+	- 생성자 주입 방식의 의존성 주입을 위해 사용됨
+	- final이나 @NonNull이 붙은 필드에 대한 생성자를 자동으로 생성해줌
+4. @Transactional
+
 ## 코드설명
+
+```JAVA
+private final UserRepository repository;
+private final PasswordEncoder passwordEncoder;
+private final TokenProvider tokenProvider;
+```
+1. private final UserRepository repository; : UserRepository를 주입받기 위한 필드
+2. private final PasswordEncoder passwordEncoder;
+	- 비밀번호 암호화를위한 인코더
+	- PasswordEncoder는 Spring Security에서 제공하는 인터페이스임
+3. private final TokenProvider tokenProvider;
+	- JWT 토큰 생성 및 검증을 위한 제공자임
+	- 인증토큰 관련된 작업을 처리함
+4. final로 선언되어, 한번 주입되면 변경할 수 없음
+
+```JAVA
+	//userId가 있는지 중복체크
+	public boolean getUserIds(UserDTO dto) {
+		//중복 userId가 없으면 true
+		if(!repository.existsByUserId(dto.getUserId())) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+```
+1. 이 메서드는 userId의 중복여부를 확인하는 용도라 boolean을 사용함
+2. if(!repository.existsByUserId(dto.getUserId()))
+	- dto.getUserId() : UserDTO에서 가져온 userId값을 가져옴
+	- repository.existsByUserId : UserRepository에서 생성한 existsByUserId를 가져옴
+```JAVA
+
+```
+
+```JAVA
+
+```
+
+```JAVA
+
+```
