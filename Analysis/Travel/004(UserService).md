@@ -471,3 +471,12 @@ UserEntity userEntity = repository.findById(id)
 	- 메서드에 잘못된 인자(argument)가 전달될 때 발생하는 런타임 예외
 	- 런타임 예외(Unchecked Exception)로 컴파일 시점에 확인되지 않음
 	- 명확하고 구체적인 오류 메시지 제공하며, 유효성 검사를 통해 메서드의 안정성을 확보함
+```JAVA
+Optional<UserEntity> user = repository.findById(id);
+Optional<UserEntity> user = repository.findById(id);
+```
+1. Optional
+	- 코드가 보다 안전하고 명시적으로 null을 다룰 수 있도록 하기 위함
+	- Null Pointer Exception(NPE) 방지 : Optional을 사용하면 null인지 확인하기 위해 직접 null 체크를 하지 않아도 됨
+	- 가독성 증가 : Optional은 null 확인 로직을 명시적으로 작성할 수 있어 가독성이 향상됨 -> null대신 Optional 메서드 (isPresent, orElse, orElseThrow 등)를 활용하여 처리할 수 있음
+	- 의도 명시 : 메서드가 null을 반환할 수도 있음을 암묵적으로 표현하는 대신에 Optional를 사용해서 메서드 호출자에게 명확히 알릴 수 있음음
