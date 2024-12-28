@@ -250,8 +250,28 @@ public class UserController {
 
 
 ```
+# Controller란?
 
+- 클라이언트의 요청을 받아 처리하고 응답을 돌려주는 엔드포인트 역할을 함
+- 모든 클라이언트 요청을 컨트롤러에서 일관되게 처리할 수 있음
+- 데이터 바인딩, 유효성 검사 등의 기능을 손쉽게 구현할 수 있으며, 다양한 어노테이션으로 쉽게 요청처리할 수 있음
 
 ## Annotation
+
+1. @RestController
+    - @Controller + @ResponseBody를 결합한 어노테이션
+    - 모든 메서드의 반환값을 HTTP Response Body에 직접 쓰여지게 하며, 주로 RESTful 웹 서비스를 개발할 때 사용됨
+    - JSON/XML 형태의 데이터를 반환하는 API 개발에 적합함
+2. @RequestMapping("/travel")
+    - 특정 URL 패턴의 요청을 처리하는 핸들러를 매핑함
+    - 클래스 레벨에서 사용하면 해당 클래스의 모든 핸들러 메서드의 기본 URL 경로가 됨
+    - HTTP 메서드를 지정하지 않으면 모든 HTTP 메서드(GET, POST, PUT 등)에 응답함
+3. @RequiredArgsConstructor
+    - Lombok에서 제공하는 어노테이션으로 final 필드나 @NonNull이 붙은 필드에 대한 생성자를 자동으로 생성함
+    - 의존성 주입(DI)을 위한 생성자를 자동으로 만들어줌
+4. @PatchMapping
+    - @RequestMapping(method = RequestMethod.PATCH)의 축약형
+    - HTTP PATCH 요청을 처리하는 핸들러 메서드를 지정함
+    - 리소스의 부분 업데이트를 수행할 때 사용됨
 
 ## 코드설명
