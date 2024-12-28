@@ -43,9 +43,7 @@ public class UserController {
     	}else {
     		return false;
     	}
-        
     }
-    
     
     //userId가 있는지 중복체크
     @PostMapping("/userIdCheck")
@@ -57,10 +55,7 @@ public class UserController {
     	}else {
     		return false;
     	}
-    	
     }
-    
-
     
     //로그인
     @PostMapping("/login")
@@ -76,9 +71,7 @@ public class UserController {
         			.build();
         	return ResponseEntity.badRequest().body(responseDTO);
         }
-        
     }
-    
     
     //구글로그인
     @PostMapping("/oauth2/google/callback")
@@ -102,7 +95,6 @@ public class UserController {
         }
     }
     
-    
     //Id찾기
     @PostMapping("/userFindId")
     public ResponseEntity<?> userFindId(@RequestBody UserDTO dto){
@@ -117,7 +109,6 @@ public class UserController {
                  .build();
            return ResponseEntity.badRequest().body(responseDTO);
         }
-       
     }
     
     // 비밀번호 찾기 (사용자 정보 확인)
@@ -165,9 +156,7 @@ public class UserController {
     	}else {
     		return false;
     	}
-    	
     }
-    
     
     //userNickName 수정하기
     @PatchMapping("/userNickNameEdit/{id}")
@@ -183,9 +172,7 @@ public class UserController {
         			.build();
         	return ResponseEntity.badRequest().body(responseDTO);
         }
-    	
-    }
-    
+    } 
     
     //프로필사진 수정
     @PatchMapping("/userProfileImageEdit/{id}")
@@ -202,10 +189,8 @@ public class UserController {
             // 예외 처리: 사용자 정보가 없거나, 파일 업로드 중 에러가 발생한 경우
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error occurred during profile update: " + e.getMessage());
-        }
-        
-    }
-    
+        }      
+    }   
 
     //프로필사진 삭제
     @PatchMapping("/userProfileImageDelete/{id}")
@@ -216,8 +201,7 @@ public class UserController {
         	return true;
         }else {
         	return false;
-        }
-    	
+        }    	
     }
     
     //로그아웃
@@ -229,9 +213,7 @@ public class UserController {
     	}else {
     		return false;
     	}
-    	
-    }
-    
+    }    
 
     //회원탈퇴
     @DeleteMapping("/withdraw/{id}")
@@ -242,10 +224,7 @@ public class UserController {
     	}else {
     		return false;
     	}
-    	
     }
-    
-
 }
 
 
@@ -275,3 +254,53 @@ public class UserController {
     - 리소스의 부분 업데이트를 수행할 때 사용됨
 
 ## 코드설명
+
+```JAVA
+//구글로그인
+@PostMapping("/oauth2/google/callback")
+public ResponseEntity<?> handleGoogleCallback(@RequestBody Map<String, String> payload) {
+    try {
+        String credential = payload.get("credential");
+        System.out.println("aaa0"+credential);
+        if (credential == null || credential.isEmpty()) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Credential is missing or empty"));
+        }
+
+        // Google 정보 검증 및 UserDTO 생성
+        UserDTO userDTO = service.verifyAndGetUserInfo(credential);
+
+        return ResponseEntity.ok(userDTO);
+    } catch (Exception e) {
+        log.error("Unexpected error: ", e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body(Collections.singletonMap("error", e.getMessage()));
+    }
+}
+```
+
+1. ResponseEntity<?> : 
+2. @RequestBody Map<String, String> payload
+3. .body(Collections.singletonMap())
+4. .status(HttpStatus.INTERNAL_SERVER_ERROR)
+
+```JAVA
+//프로필사진 수정
+@PatchMapping("/userProfileImageEdit/{id}")
+public ResponseEntity<?> userProfileImageEdit(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+    
+    System.out.println("file: " +file);
+    try {
+        // 서비스 호출하여 프로필 사진을 수정하고 결과를 반환
+        UserDTO updatedUserDTO = service.userProfileImageEdit(id, file);
+        System.out.println("updateDTO : " +updatedUserDTO);
+        return ResponseEntity.ok().body(updatedUserDTO);  // 성공적으로 수정된 UserDTO 반환
+
+    } catch (RuntimeException e) {
+        // 예외 처리: 사용자 정보가 없거나, 파일 업로드 중 에러가 발생한 경우
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body("Error occurred during profile update: " + e.getMessage());
+    }
+}
+```
+
+1. @PathVariable Long id, @RequestParam("file") MultipartFile file
