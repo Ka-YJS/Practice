@@ -83,7 +83,7 @@ public class UserController {
                 return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Credential is missing or empty"));
             }
 
-            // Google 정보 검증 및 UserDTO 생성
+            //Google 정보 검증 및 UserDTO 생성
             UserDTO userDTO = service.verifyAndGetUserInfo(credential);
 
             return ResponseEntity.ok(userDTO);
@@ -111,7 +111,7 @@ public class UserController {
         }
     }
     
-    // 비밀번호 찾기 (사용자 정보 확인)
+    //비밀번호 찾기 (사용자 정보 확인)
     @PostMapping("/userFindPassword")
     public ResponseEntity<?> findPassword(@RequestBody UserDTO dto) {
     	System.out.println(dto);
@@ -180,13 +180,13 @@ public class UserController {
     	
     	System.out.println("file: " +file);
         try {
-            // 서비스 호출하여 프로필 사진을 수정하고 결과를 반환
+            //서비스 호출하여 프로필 사진을 수정하고 결과를 반환
             UserDTO updatedUserDTO = service.userProfileImageEdit(id, file);
             System.out.println("updateDTO : " +updatedUserDTO);
-            return ResponseEntity.ok().body(updatedUserDTO);  // 성공적으로 수정된 UserDTO 반환
+            return ResponseEntity.ok().body(updatedUserDTO);  //성공적으로 수정된 UserDTO 반환
 
         } catch (RuntimeException e) {
-            // 예외 처리: 사용자 정보가 없거나, 파일 업로드 중 에러가 발생한 경우
+            //예외 처리: 사용자 정보가 없거나, 파일 업로드 중 에러가 발생한 경우
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error occurred during profile update: " + e.getMessage());
         }      
@@ -266,7 +266,7 @@ public ResponseEntity<?> handleGoogleCallback(@RequestBody Map<String, String> p
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Credential is missing or empty"));
         }
 
-        // Google 정보 검증 및 UserDTO 생성
+        //Google 정보 검증 및 UserDTO 생성
         UserDTO userDTO = service.verifyAndGetUserInfo(credential);
 
         return ResponseEntity.ok(userDTO);
@@ -278,10 +278,21 @@ public ResponseEntity<?> handleGoogleCallback(@RequestBody Map<String, String> p
 }
 ```
 
-1. ResponseEntity<?> : 
+1. ResponseEntity<?> 
+    - HTTP 응답을 나타내는 Spring Framework의 클래스로, 상태 코드, 헤더, 본문을 포함한 완전한 HTTP 응답을 만들 수 있음
+    - <?> 는 와일드카드 타입으로, 응답 본문이 어떤 타입이든 될 수 있음을 의미함
+    <br>->성공하면 UserDTO를 반환받지만, 실패 시에는 에러 메시지를 반환할 수 있음
 2. @RequestBody Map<String, String> payload
+    - @RequestBody: HTTP 요청의 본문(body)을 자바 객체로 변환하라는 어노테이션
+    - Map<String, String> : 키와 값이 모두 문자열인 맵 형태로 요청 데이터를 받겠다는 의미임
+    - payload : JSON 형태의 요청 본문을 자동으로 Map 객체로 변환해줌
+    <br>->예를들어, {"credential": "xyz123"} → payload.get("credential")로 접근 가능함함
 3. .body(Collections.singletonMap())
+    - Collections.singletonMap() : 단 하나의 키-값 쌍만 가진 불변 Map을 생성하는 유틸리티 메서드임(메모리 효율적이며, 단일 키-값 쌍만 필요할 때 유용함)
 4. .status(HttpStatus.INTERNAL_SERVER_ERROR)
+    - 서버 내부 오류가 발생했을 때 사용되는 상태 코드
+    - HttpStatus.INTERNAL_SERVER_ERROR는 500 상태 코드를 나타냄
+    - 다른 예시로는 OK(200), BAD_REQUEST(400), NOT_FOUND(404) 등이 있음음
 
 ```JAVA
 //프로필사진 수정
@@ -290,13 +301,13 @@ public ResponseEntity<?> userProfileImageEdit(@PathVariable Long id, @RequestPar
     
     System.out.println("file: " +file);
     try {
-        // 서비스 호출하여 프로필 사진을 수정하고 결과를 반환
+        //서비스 호출하여 프로필 사진을 수정하고 결과를 반환
         UserDTO updatedUserDTO = service.userProfileImageEdit(id, file);
         System.out.println("updateDTO : " +updatedUserDTO);
-        return ResponseEntity.ok().body(updatedUserDTO);  // 성공적으로 수정된 UserDTO 반환
+        return ResponseEntity.ok().body(updatedUserDTO);  //성공적으로 수정된 UserDTO 반환
 
     } catch (RuntimeException e) {
-        // 예외 처리: 사용자 정보가 없거나, 파일 업로드 중 에러가 발생한 경우
+        //예외 처리: 사용자 정보가 없거나, 파일 업로드 중 에러가 발생한 경우
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                 .body("Error occurred during profile update: " + e.getMessage());
     }
@@ -304,3 +315,17 @@ public ResponseEntity<?> userProfileImageEdit(@PathVariable Long id, @RequestPar
 ```
 
 1. @PathVariable Long id, @RequestParam("file") MultipartFile file
+    - @PathVariable Long id : URL 경로의 변수 값을 메서드의 파라미터로 전달받을 때 사용함
+    <br>->/userProfileImageEdit/{id}에서 {id} 부분이 실제 값으로 치환됨
+    - @RequestParam("file") MultipartFile file
+        1. HTTP 요청의 파라미터나 form-data로 전송된 파일을 받을 때 사용함
+        2. MultipartFile은 Spring에서 제공하는 파일 처리를 위한 인터페이스임
+        3. form-data에서 name="file"인 필드의 파일을 받음
+        4. MultipartFile이 제공하는 주요 메서드들은 아래와 같음
+        ```JAVA
+        String getOriginalFilename()    //원본 파일명
+        String getContentType()         //파일 타입
+        byte[] getBytes()              //파일 데이터
+        long getSize()                 //파일 크기
+        boolean isEmpty()              //파일이 비어있는지 확인
+        ```
