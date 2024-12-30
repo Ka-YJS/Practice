@@ -85,12 +85,21 @@ public class EmailService {
 ## 코드설명
 
 ```JAVA
+import org.springframework.mail.javamail.JavaMailSender;
+import jakarta.mail.internet.MimeMessage;
 ```
+1. JavaMailSender : 스프링 프레임워크에서 제공하는 이메일 발송 인터페이스
+2. MimeMessage : 이메일의 MIME(Multipurpose Internet Mail Extensions) 형식을 지원하는 클래스임
 ```JAVA
-
+String authCode = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
 ```
+1. ThreadLocalRandom : 스레드 안전한 난수 생성기
+2. nextInt(100000, 1000000)
+    - 100000에서 999999 사이의 난수 생성
+    - 최소값은 100000 (6자리 시작)이고, 최대값은 999999 (6자리 끝) -> 6자리 랜덤 인증번호 생성
 ```JAVA
+message.setRecipients(MimeMessage.RecipientType.TO, email);
 ```
-```JAVA
-
-```
+1. message.setRecipients : 이메일수신자 설정
+2. RecipientType.TO : 주 수신자 지정
+3. email : 수신자의 이메일 주소
