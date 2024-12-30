@@ -44,5 +44,18 @@ public class LikeEntity {
 
 ## Annotation
 
+-
+
 
 ## 코드설명
+
+```JAVA
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+```
+1. GenerationType.IDENTITY
+    - MySQL의 AUTO_INCREMENT와 같은 기능임
+    <br>(AUTO_INCREMENT : )
+    - 데이터베이스에 레코드가 삽입될 때 자동으로 고유한 값을 생성함
+    - 데이터베이스가 ID 값을 자동으로 생성하고 관리함
+    - 새로운 레코드가 추가될 때마다 이전 값에 1을 더한 값이 자동으로 할당됨
+    - 한 번 생성된 ID는 변경되지 않으며, 레코드가 삭제되어도 해당 ID는 재사용되지 않음
