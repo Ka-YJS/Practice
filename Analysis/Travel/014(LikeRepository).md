@@ -22,3 +22,11 @@ public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
 //    List<LikeEntity> findByPostEntity(PostEntity postEntity);
 }
 ```
+
+## Annotation
+
+-
+
+## 코드설명
+
+-
