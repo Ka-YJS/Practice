@@ -67,8 +67,34 @@ public class PostEntity {
     // 좋아요 수 계산
     public int getLikeCount() {
         return likeEntities.size();  // LikeEntity 리스트의 크기 반환
-    }
-    
+    } 
 }
 ```
 
+## Annotation
+
+1. @Column
+    - 엔티티 클래스의 필드와 데이터베이스 테이블의 컬럼을 매핑하는 어노테이션
+    - nullable = false와 같은 옵션을 통해 NOT NULL 제약 조건을 설정할 수 있음
+    - columnDefinition = "TEXT"와 같이 컬럼의 타입을 지정할 수 있음
+2. @ElementCollection
+    - 엔티티에 포함된 값 타입 컬렉션을 매핑하는 어노테이션
+    - placeList와 imageUrls와 같이 여러 개의 값을 가지는 컬럼을 표현할 때 사용됨
+3. @CollectionTable
+    - @ElementCollection과 함께 사용되며, 값 타입 컬렉션을 위한 별도의 테이블을 지정함
+    - name = "post_places"와 같이 테이블 이름을 지정할 수 있음
+4. @JoinColumn
+    - 외래 키 관계를 매핑할 때 사용되며, 테이블 이름을 지정할 수 있음
+
+## 코드설명
+
+```JAVA
+private List<String> placeList;
+private List<String> imageUrls;
+private List<LikeEntity> likeEntities;
+```
+
+1. List<String\>
+    - 문자열 값들의 컬렉션을 나타내는 자바 자료 구조임
+    - 게시글에 포함된 다양한 정보(장소, 이미지 등)를 효과적으로 저장할 수 있음
+    - 데이터베이스 측면에서는 @ElementCollection과 @CollectionTable 어노테이션을 사용하여 이러한 리스트 타입의 데이터를 별도의 테이블에 저장할 수 있음
