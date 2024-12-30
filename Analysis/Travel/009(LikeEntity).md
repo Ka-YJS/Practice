@@ -41,3 +41,8 @@ public class LikeEntity {
     // 추가적인 메서드들이 필요하면 여기에 추가 가능
 }
 ```
+
+## Annotation
+
+
+## 코드설명

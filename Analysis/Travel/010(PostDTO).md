@@ -29,9 +29,11 @@ public class PostDTO {
 	private String thumbnail;
 	private int likes;
 	private String postCreatedAt;	//게시글등록시간
-	private UserEntity userEntity;  
-	
+	private UserEntity userEntity;  	
 }
-
-
 ```
+
+## Annotation
+
+
+## 코드설명
