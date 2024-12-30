@@ -214,7 +214,15 @@ public PostDTO getPostById(Long id) {
     - .orElseThrow() : Optional 객체가 비어있을 때(값이 없을 때) 예외를 던지는 메서드임
     - Optional이 비어있다면 RuntimeException을 발생
     - () -> new RuntimeException(...) : 예외를 생성하는 람다식
-2. board.map(this::convertToDTO) : Optional<PostEntity\>를 Optional<PostDTO\>로 변환
+2. board.map(this::convertToDTO)
+    - board는 Optional<PostEntity\>타입임
+    <br>->Optional<PostEntity\>를 Optional<PostDTO\>로 변환
+    - Optional.map()은 Optional 내부 값을 다른 값으로 변환하는 메서드임
+    - this::convertToDTO는 메서드 레퍼런스로, convertToDTO 메서드를 지칭함
+    - 실행과정
+        1. Optional 내부의 PostEntity를 convertToDTO 메서드에 전달
+        2. PostEntity가 DTO로 변환됨
+        3. 변환된 DTO를 새로운 Optional로 감싸서 반환함
 ```JAVA
 if(placeListParsed != null && !placeListParsed.isEmpty()) {
     postEntity.setPlaceList(new ArrayList<>(placeListParsed));
@@ -224,4 +232,11 @@ if(placeListParsed != null && !placeListParsed.isEmpty()) {
 
 List<String> allImageUrls = new ArrayList<>(existingImageUrls);
 ```
-1. new ArrayList<>(placeListParsed) save는 갠적으로 찾아보기
+1. new ArrayList<>(placeListParsed)
+    - 기존 컬렉션을 이용해 새로운 ArrayList를 생성하는 복사 생성자(copy constructor) 구문임
+    - 원본 컬렉션의 모든 요소가 새 ArrayList로 복사되고, 원본과 새 리스트는 서로 독립적임(한쪽 변경이 다른쪽에 영향 없음)
+    - 아래코드와 같다고 볼 수 있음음
+    ```JAVA
+    ArrayList<String> newList = new ArrayList<>();
+    newList.addAll(placeListParsed);
+    ```
