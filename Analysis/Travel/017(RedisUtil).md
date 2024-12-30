@@ -38,3 +38,24 @@ public class RedisUtil {
 
 }
 ```
+
+## Annotation
+
+-
+
+## 코드설명
+
+```JAVA
+private final StringRedisTemplate redisTemplate;
+```
+1. StringRedisTemplate
+```JAVA
+public void setDataExpire(String key, String value, long duration) {
+    ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+    Duration expireDuration = Duration.ofSeconds(duration);
+    valueOperations.set(key, value, expireDuration);
+}
+```
+1. ValueOperations<String, String>
+2. Duration.ofSeconds(duration)
+3. valueOperations.set(key, value, expireDuration)
