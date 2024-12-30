@@ -33,9 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class PostService {
 
     private final PostRepository postRepository;	
-	
     private final UserRepository userRepository;
-    
     private final LikeRepository likeRepository;
 	
 
@@ -60,13 +58,12 @@ public class PostService {
 	       return posts.stream()
 	             .map(this::convertToDTO)
 	             .collect(Collectors.toList());
-       }
+        }
        else {
           throw new IllegalArgumentException("User not found");
        }
     }
     
-
     // 게시글 한 건 조회
     public PostDTO getPostById(Long id) {
         Optional<PostEntity> board = postRepository.findById(id);
@@ -77,7 +74,6 @@ public class PostService {
         	throw new RuntimeException("게시글을 찾을 수 없습니다.");
 		}
     }
-
     
     // 게시글 생성
     public PostDTO createPost(PostDTO postDTO) {
@@ -99,7 +95,6 @@ public class PostService {
         }
         return fileUrls;
     }
-
     
     //게시글 수정
     public PostDTO updatePost(Long id, String postTitle, String postContent, List<String> placeListParsed, 
@@ -143,9 +138,6 @@ public class PostService {
         return false;
     }
     
-    
-    
-
     private PostDTO convertToDTO(PostEntity entity) {
         return PostDTO.builder()
                 .postId(entity.getPostId())
@@ -173,3 +165,63 @@ public class PostService {
     }
 }
 ```
+
+## Annotation
+
+1. @Value
+    - Spring Framework에서 외부 설정값(properties 또는 yml 파일의 값)을 Java 코드에 주입할 때 사용됨
+    - 예를들어, @Value("${file.upload-dir}")라고 쓰이면 application.properties나 application.yml 파일에서 file.upload-dir이라는 키에 해당하는 값을 찾아서 uploadDir 변수에 자동으로 주입함
+    - 환경별로 다른 설정값을 쉽게 적용 가능하고, 코드 변경 없이 설정값만 변경 가능하며, 설정값을 한 곳에서 관리 가능하다는 장점이 있음
+
+## 코드설명
+
+```JAVA
+// 게시판 전체 조회
+public List<PostDTO> getAllPosts() {
+    return postRepository.findAll().stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
+}
+```
+1. .map(this::convertToDTO)
+    - 스트림의 각 요소(PostEntity)를 PostDTO로 변환함
+    - this::convertToDTO는 메서드 레퍼런스로, 현재 클래스의 convertToDTO 메서드를 각 요소에 적용함
+    - :: : Java 8에서 도입된 메서드 레퍼런스(Method Reference) 연산자로, 메서드 레퍼런스는 이미 정의된 메서드를 람다식으로 간편하게 표현하는 방법임
+    ```JAVA
+    //일반적인 람다식 표현
+    .map(entity -> convertToDTO(entity))
+
+    //메서드 레퍼런스를 사용한 표현
+    .map(this::convertToDTO)
+    ```
+2. .collect(Collectors.toList())
+    - 스트림의 결과를 List 형태로 수집함
+    - 스트림 처리 결과를 실제 List 객체로 만들어줌
+
+```JAVA
+// 게시글 한 건 조회
+public PostDTO getPostById(Long id) {
+    Optional<PostEntity> board = postRepository.findById(id);
+    if(board.isPresent()) {
+        return board.map(this::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+    }else {
+        throw new RuntimeException("게시글을 찾을 수 없습니다.");
+    }
+}
+```
+1. .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."))
+    - .orElseThrow() : Optional 객체가 비어있을 때(값이 없을 때) 예외를 던지는 메서드임
+    - Optional이 비어있다면 RuntimeException을 발생
+    - () -> new RuntimeException(...) : 예외를 생성하는 람다식
+2. board.map(this::convertToDTO) : Optional<PostEntity\>를 Optional<PostDTO\>로 변환
+```JAVA
+if(placeListParsed != null && !placeListParsed.isEmpty()) {
+    postEntity.setPlaceList(new ArrayList<>(placeListParsed));
+}else {
+    postEntity.setPlaceList(null);
+}
+
+List<String> allImageUrls = new ArrayList<>(existingImageUrls);
+```
+1. new ArrayList<>(placeListParsed) save는 갠적으로 찾아보기
