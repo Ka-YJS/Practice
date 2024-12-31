@@ -25,8 +25,8 @@ public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
 
 ## Annotation
 
--
+\-
 
 ## 코드설명
 
--
+\-

@@ -21,8 +21,8 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
 ## Annotation
 
--
+\-
 
 ## 코드설명
 
--
+\-
