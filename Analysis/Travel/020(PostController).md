@@ -41,17 +41,15 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000") // React 앱이 동작하는 주소
+@CrossOrigin(origins = "http://localhost:3000") //React 앱이 동작하는 주소
 @RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
-	
 	private final UserRepository userRepository;
-	
 	private final PostRepository postRepository;
 
-    // 게시판 전체 조회
+    //게시판 전체 조회
     @GetMapping("/posts")
     public ResponseEntity<?> getAllPosts() {
         List<PostDTO> dtos = postService.getAllPosts();
@@ -59,7 +57,7 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
     
-    // 마이 게시판 조회
+    //마이 게시판 조회
     @GetMapping("/myPosts/{userId}")
     public ResponseEntity<?> getMyPosts(@PathVariable Long userId){
     	List<PostDTO> dtos = postService.getMyPosts(userId);
@@ -67,7 +65,7 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
     
-    // 게시글 한 건 조회
+    //게시글 한 건 조회
     @GetMapping("/posts/postDetail/{id}")
     public ResponseEntity<?> getPostById(@PathVariable Long id) {
         List<PostDTO> dtos = List.of(postService.getPostById(id));
@@ -75,7 +73,7 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-    // 게시글 작성 + 이미지 업로드
+    //게시글 작성 + 이미지 업로드
     @PostMapping(value = "/write/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createPost(
     		@PathVariable Long userId,
@@ -84,15 +82,15 @@ public class PostController {
             @RequestPart(value = "placeList", required = false) String placeList,
             @RequestPart("userNickName") String userNickName,
             @RequestPart(value = "files", required = false) List<MultipartFile> files) {
-    	// 유저 ID를 통해 UserEntity 가져오기
     	
+        //유저 ID를 통해 UserEntity 가져오기
         Optional<UserEntity> userOptional = userRepository.findById(userId);
         if (!userOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);  // 유저가 없으면 오류 반환
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);  //유저가 없으면 오류 반환
         }
-        UserEntity user = userOptional.get();  // UserEntity 가져오기
+        UserEntity user = userOptional.get();  //UserEntity 가져오기
 
-        // 서비스 호출 및 DTO 빌드
+        //서비스 호출 및 DTO 빌드
         PostDTO postDTO = new PostDTO();
         postDTO.setPostTitle(postTitle);
         postDTO.setPostContent(postContent);
@@ -103,7 +101,7 @@ public class PostController {
         postDTO.setUserEntity(user);
         postDTO.setPostCreatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
               
-        // 파일 저장 로직 호출
+        //파일 저장 로직 호출
         if (files != null && !files.isEmpty()) {
         	List<String> imageUrls = postService.saveFiles(files);
             imageUrls = postService.saveFiles(files);
@@ -113,7 +111,6 @@ public class PostController {
         PostDTO createdPost = postService.createPost(postDTO);
         return ResponseEntity.ok(createdPost);
     }
-    
     
     //게시글 수정
     @PutMapping(value = "/posts/postEdit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -126,7 +123,7 @@ public class PostController {
             @RequestPart(value = "files", required = false) List<MultipartFile> files,
             @RequestPart(value = "existingImageUrls", required = false) String existingImageUrlsJson) {
 
-        // JSON 문자열을 List<String>으로 변환
+        //JSON 문자열을 List<String>으로 변환
         ObjectMapper objectMapper = new ObjectMapper();
         List<String> existingImageUrls = new ArrayList<>();
         try {
@@ -137,12 +134,12 @@ public class PostController {
             throw new RuntimeException("existingImageUrls JSON 파싱 중 오류 발생", e);
         }
         
-     // placeList가 null이거나 비어 있으면 빈 리스트 전달
+        //placeList가 null이거나 비어 있으면 빈 리스트 전달
         List<String> placeListParsed = placeList != null && !placeList.trim().isEmpty()
                 ? Arrays.asList(placeList.split(", "))
                 : null;
         
-        // 업데이트 로직 수행
+        //업데이트 로직 수행
         PostDTO updatedPost = postService.updatePost(
             id,
             postTitle,
@@ -156,10 +153,7 @@ public class PostController {
         return ResponseEntity.ok(updatedPost);
     }
 
-
-
-
-    // 게시글 삭제
+    //게시글 삭제
     @DeleteMapping("/postDelete/{id}")
     public boolean deletePost(@PathVariable Long id) {
         return postService.deletePost(id);
@@ -169,16 +163,31 @@ public class PostController {
 
 ## Annotation
 
-\-
+1. @CrossOrigin
+2. @RequestPart
 
 ## 코드설명
 
 ```JAVA
+//서비스 호출 및 DTO 빌드
+PostDTO postDTO = new PostDTO();
+postDTO.setPostTitle(postTitle);
+postDTO.setPostContent(postContent);
+if (placeList != null && !placeList.trim().isEmpty()) {
+    postDTO.setPlaceList(Arrays.asList(placeList.split(", ")));
+}
+postDTO.setUserNickname(userNickName);
+postDTO.setUserEntity(user);
+postDTO.setPostCreatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 ```
+1. !placeList.trim()
+2. placeList.split(", ")
+3. .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
 ```JAVA
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
 ```
-```JAVA
-```
-```JAVA
-
-```
+1. databind.ObjectMapper
+2. type.TypeReference
+3. JsonProcessingException
