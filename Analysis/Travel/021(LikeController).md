@@ -29,23 +29,23 @@ public class LikeController {
     private final LikeService likeService;
     private final UserRepository  userRepository;
 
- // 좋아요 추가
+    //좋아요 추가
     @PostMapping("/{postId}")
     public ResponseEntity<LikeDTO> addLike(@PathVariable("postId") Long postId) {
-        Long userId = getCurrentUserId();  // 현재 사용자 ID를 추출
+        Long userId = getCurrentUserId();  //현재 사용자 ID를 추출
         LikeDTO likeDTO = likeService.addLike(userId, postId);
         return ResponseEntity.ok(likeDTO);
     }
 
-    // 좋아요 삭제
+    //좋아요 삭제
     @DeleteMapping("/{postId}")
     public ResponseEntity<LikeDTO> removeLike(@PathVariable("postId") Long postId) {
-        Long userId = getCurrentUserId();  // 현재 사용자 ID를 추출
+        Long userId = getCurrentUserId();  //현재 사용자 ID를 추출
         LikeDTO likeDTO = likeService.removeLike(userId, postId);
         return ResponseEntity.ok(likeDTO);
     }
 
-    // 사용자가 해당 게시물에 좋아요를 눌렀는지 확인
+    //사용자가 해당 게시물에 좋아요를 눌렀는지 확인
     @GetMapping("/{postId}/isLiked")
     public ResponseEntity<Boolean> isLiked(@PathVariable Long postId) {
     	
@@ -55,16 +55,16 @@ public class LikeController {
         return ResponseEntity.ok(liked);
     }
 
-    // 현재 로그인된 사용자의 ID를 가져오는 메소드
+    //현재 로그인된 사용자의 ID를 가져오는 메소드
     private Long getCurrentUserId() {
-        // SecurityContextHolder에서 userId를 추출
+        //SecurityContextHolder에서 userId를 추출
         UsernamePasswordAuthenticationToken authentication = 
             (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-     // Authentication 객체에서 사용자 이름을 가져옴
+        //Authentication 객체에서 사용자 이름을 가져옴
         String username = (String) authentication.getPrincipal();
         
         UserEntity user = userRepository.findByUserId(username);
-        // 사용자 이름을 Long 타입으로 변환하여 반환
+        //사용자 이름을 Long 타입으로 변환하여 반환
         return user.getId();
     }
 }
@@ -77,6 +77,9 @@ public class LikeController {
 ## 코드설명
 
 ```JAVA
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 ```
 ```JAVA
 ```
