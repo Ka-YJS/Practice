@@ -164,7 +164,14 @@ public class PostController {
 ## Annotation
 
 1. @CrossOrigin
+    - CORS(Cross-Origin Resource Sharing) 정책을 설정하는 어노테이션
+    - 다른 도메인에서의 HTTP 요청을 허용하게 해주는 보안 메커니즘
+    - 이 코드에서는 localhost:3000에서의 API 요청을 허용함
 2. @RequestPart
+    - Multipart/form-data 요청에서 특정 파트의 데이터를 받을 때 사용하는 어노테이션
+    <br>-> Multipart/form-data : HTTP 요청에서 사용되는 특별한 형태의 Content-Type으로 파일 업로드와 일반 데이터를 함께 전송하거나 여러 종류의 데이터를 한 번에 전송할 때 사용됨
+    - required 속성을 통해 필수 여부를 지정할 수 있음(예: required = false)
+    <br>-> required = false은 선택적인 데이터, required = true는 반드시 필요한 데이터임임
 
 ## 코드설명
 
@@ -180,14 +187,22 @@ postDTO.setUserNickname(userNickName);
 postDTO.setUserEntity(user);
 postDTO.setPostCreatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 ```
-1. !placeList.trim()
+1. !placeList.trim().isEmpty() : 문자열의 앞뒤 공백을 제거한 후 문자열이 비어있지 않은지 확인함
 2. placeList.split(", ")
+    - 문자열을 특정 구분자(여기서는 ", ")를 기준으로 나누어 배열로 만듦
+    - 예시 : "서울, 부산, 제주" → ["서울", "부산", "제주"]
 3. .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+    - 날짜/시간을 지정된 형식으로 포맷팅한다는 의미임임
+    - ofPattern() : "yyyy-MM-dd HH:mm" 패턴으로 날짜를 형식화함 ->예시: "2025-01-01 14:30"
 ```JAVA
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
 ```
 1. databind.ObjectMapper
+    - Jackson 라이브러리의 핵심 클래스로, Java 객체와 JSON 간의 변환을 담당함
+    - JSON을 Java 객체로(역직렬화) 또는 Java 객체를 JSON으로(직렬화) 변환할 수 있음
 2. type.TypeReference
+    - 제네릭 타입 정보를 유지하면서 Jackson이 JSON을 Java 객체로 변환할 때 사용됨
+    - 여기서는 JSON 문자열을 List<String\> 타입으로 변환할 때 사용됨
 3. JsonProcessingException
