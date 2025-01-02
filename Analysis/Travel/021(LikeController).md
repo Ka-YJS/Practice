@@ -77,14 +77,13 @@ public class LikeController {
 ## 코드설명
 
 ```JAVA
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 ```
-```JAVA
-```
-```JAVA
-```
-```JAVA
-
-```
+1. security.authentication.UsernamePasswordAuthenticationToken
+    - 사용자 인증 정보를 담는 토큰 클래스임
+    - 사용자의 아이디(Principal)와 비밀번호(Credentials)를 포함함
+    - 현재 코드에서는 SecurityContextHolder에서 인증된 사용자 정보를 가져올 때 사용
+2. security.core.context.SecurityContextHolder
+    - 현재 스레드의 보안 컨텍스트 정보를 보관하는 클래스임
+    - 현재 로그인한 사용자의 인증 정보를 어디서든 접근할 수 있게 해줌
