@@ -39,8 +39,9 @@ public class SecurityConfig {
           			"/travel/userFindPassword",
           			"/travel/userResetPassword",
           			"/travel/oauth2/google/callback",
-          			"/api/email/**", 
-          			"/uploads/**"
+          			"/travel/email/**", 
+          			"/uploads/**",
+          			"/home", "/favicon.ico"
           			).permitAll() //경로는 인증 없이 허용
           	.anyRequest().authenticated()  // 그 외 요청은 인증 필요
         	.and()
@@ -50,7 +51,6 @@ public class SecurityConfig {
         	.addFilterBefore(
         			new JwtAuthenticationFilter(tokenProvider), 
         			UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
     
@@ -59,6 +59,18 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
+```
+
+## Annotation
+
+\-
+
+## 코드설명
+
+```JAVA
+```
+```JAVA
+```
+```JAVA
 ```

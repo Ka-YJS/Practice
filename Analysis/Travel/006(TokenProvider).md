@@ -52,8 +52,7 @@ public class TokenProvider {
 				.setExpiration(ext)		//exp
 				.compact();			//토큰을 .으로 구분된 하나의 문자열로 만들어준다
 		return jwt;
-	}
-	
+	}	
 	
 	//JWT 토큰 검증 및 유저 id 반환
 	public String validateAndGetUserId(String token) {
@@ -71,8 +70,7 @@ public class TokenProvider {
 		}else {
 			return null;
 		}
-	}
-		
+	}	
 	
 	//토큰이 만료되었는지 확인
 	public boolean isTokenExpired(String token) {
@@ -84,14 +82,19 @@ public class TokenProvider {
 		
 		//만료되었으면 true
 		return expiration.before(new Date());
-	}
-	
+	}	
 }
-
-
 ```
-
 
 ## Annotation
 
+\-
+
 ## 코드설명
+
+```JAVA
+```
+```JAVA
+```
+```JAVA
+```

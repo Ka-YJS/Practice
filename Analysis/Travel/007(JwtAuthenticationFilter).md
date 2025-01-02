@@ -23,7 +23,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
 	private final TokenProvider tokenProvider;
 
-
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -37,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	    		requestURI.equals("/travel/userFindPassword")|| 
 	    		requestURI.equals("/travel/userResetPassword")|| 
 	    		requestURI.equals("/travel/oauth2/google/callback")||
-	    		requestURI.startsWith("/api/email")|| 
+	    		requestURI.startsWith("/travel/email")|| 
 	    		requestURI.startsWith("/uploads")) {
 	        filterChain.doFilter(request, response);
 	        return; // 이 경로들은 필터를 넘기고 종료
@@ -62,19 +61,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             System.out.println("Authorization header is missing or invalid");
             return;
         }
-
         filterChain.doFilter(request, response);
     }
-
 }
-
-	
-
-
-
 ```
-
 
 ## Annotation
 
+\-
+
 ## 코드설명
+
+```JAVA
+```
+```JAVA
+```
+```JAVA
+```
