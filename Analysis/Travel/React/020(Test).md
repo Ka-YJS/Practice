@@ -90,7 +90,7 @@ const center = {
         <button onClick={() => {}}>검색</button>
    </div>
       <LoadScript
-        googleMapsApiKey="AIzaSyDdfuKZuF0IpsUtjlx_Syh-gmJhCE70t-8"
+        googleMapsApiKey="GoogleMapAipKey"
       >
         <GoogleMap
           mapContainerStyle={containerStyle}
