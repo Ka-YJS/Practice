@@ -117,14 +117,36 @@ export default HomeScreen;
 # 코드설명
 
 ```JS
-
+import { useNavigate } from "react-router-dom"
 ```
+1. useNavigate
+  - react-router-dom이 제공하는 여러 기능들 중 하나임
+  - React Router의 훅(Hook)으로, 프로그래밍 방식으로 페이지 이동을 할 수 있게 해줌
 ```JS
-
+style={
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  animation: "pulse 2s infinite",
+  transition: "all 0.3s ease"
+}
 ```
+1. display: "flex" -> Flexbox 레이아웃을 활성화함
+2. flexDirection: "column" -> 자식 요소들을 세로로 배치함
+3. justifyContent: "center" -> 주축(세로)에서 중앙 정렬함
+4. alignItems: "center" -> 교차축(가로)에서 중앙 정렬함
+5. animation: "pulse 2s infinite" -> pulse라는 애니메이션을 2초 동안 무한 반복함(깜빡임)
+6. transition: "all 0.3s ease" -> 모든 속성 변화를 0.3초 동안 부드럽게 전환하며, ease는 전환의 속도 곡선을 의미
 ```JS
-
+<style>
+  {@keyframes pulse { 0%{} 50%{} 100%{}}}
+</style>
 ```
-```JS
-
-```
+1. @keyframes pulse
+  - pulse라는 이름의 사용자 정의 애니메이션을 정의함
+  - 요소의 상태 변화를 시간에 따라 정의함
+2. 0%{} 50%{} 100%{}
+  - 애니메이션의 각 단계를 정의함
+  - 0%은 시작상태, 50%은 중간상태, 100%은 종료상태라고 볼 수 있음
+  - 이를 통해 텍스트 그림자효과가 점점 강해졌다가 약해지는 순환을 만듦
