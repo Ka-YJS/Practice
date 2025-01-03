@@ -84,35 +84,35 @@ function Signup() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // 이메일 형식 검증
+    //이메일 형식 검증
     if (!validateEmail(userId)) {
       alert("이메일 형식이 올바르지 않습니다.");
       return;
     }
-    // 이메일 인증 확인
-    // if (!isEmailVerified) {
-    //   alert("이메일 인증을 완료해주세요.");
-    //   return;
-    // }
+    //이메일 인증 확인
+    //if (!isEmailVerified) {
+    //  alert("이메일 인증을 완료해주세요.");
+    //  return;
+    //}
 
-    // 비밀번호 형식 검증
+    //비밀번호 형식 검증
     if (!validatePassword(userPassword)) {
       alert("비밀번호는 8자 이상이며 특수문자를 포함해야 합니다.");
       return;
     }
-    // 전화번호 정규식 검증
+    //전화번호 정규식 검증
     
     if (!validataeUserPhoneNumber(userPhoneNumber)) {
       alert("전화번호는 - 들어가지않은 11자리 숫자로 이루어져야 됩니다..");
       return;
     }
     
-    // 비밀번호 확인 일치 여부
+    //비밀번호 확인 일치 여부
     if (userPassword !== userPasswordConfirm) {
       alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
       return;
     }
-    // 아이디 중복 체크 확인
+    //아이디 중복 체크 확인
     if (!isIdChecked) {
       alert("아이디 중복체크를 해주세요.");
       return;
@@ -135,7 +135,6 @@ function Signup() {
       })
   };//회원가입 버튼
 
-
   //userId 중복체크
   const handleUserIdCheck = async() => {
     //userId 입력란이 비어있을때
@@ -146,7 +145,7 @@ function Signup() {
 
     const userIdCheck = {userId: userId};
 
-    // userId 중복확인 call 메서드
+    //userId 중복확인 call 메서드
     await call("/travel/userIdCheck","POST",userIdCheck,user)
       .then((response)=>{
         if(response){
@@ -162,7 +161,7 @@ function Signup() {
   const handleEmailValidation = (value) => {
     setUserId(value);
     setIsIdChecked(false);
-    setEmailError(!validateEmail(value)); // 이메일 형식 검증
+    setEmailError(!validateEmail(value)); //이메일 형식 검증
   };
 
   const handleEmailVerification = () => {
@@ -171,22 +170,22 @@ function Signup() {
       return;
     }
 
-    // 이메일 인증 코드 발송 전에 로딩 상태로 설정
+    //이메일 인증 코드 발송 전에 로딩 상태로 설정
     setIsLoading(true);
 
-    // 이메일 인증 코드 발송
+    //이메일 인증 코드 발송
     axios.get(`http://${config.IP_ADD}:9090/travel/email/auth?address=${userId}`)
       .then((response) => {
-        setIsLoading(false); // 로딩 상태 해제
+        setIsLoading(false); //로딩 상태 해제
         if (response.data.success) {
           alert("이메일 인증 코드가 발송되었습니다. 인증 코드를 입력하세요.");
-          setIsAuthCodeSent(true); // 인증 코드 입력창 활성화
+          setIsAuthCodeSent(true); //인증 코드 입력창 활성화
         } else {
           alert("이메일 인증 코드 발송에 실패했습니다.");
         }
       })
       .catch((error) => {
-        setIsLoading(false); // 로딩 상태 해제
+        setIsLoading(false); //로딩 상태 해제
         console.error("이메일 인증 코드 발송 실패:", error);
         alert("이메일 인증 코드 발송 중 오류가 발생했습니다.");
       });
@@ -195,7 +194,7 @@ function Signup() {
   //이메일 인증코드 체크
   const handleAuthCodeChange = (e) => {
     setAuthCode(e.target.value);
-    setAuthCodeError(""); // 오류 초기화
+    setAuthCodeError(""); //오류 초기화
   };
 
   //이메일 인증코드 확인버튼
@@ -205,7 +204,7 @@ function Signup() {
       return;
     }
 
-    // 인증 코드 검증
+    //인증 코드 검증
     axios.post(`http://${config.IP_ADD}:9090/travel/email/auth?address=${userId}&authCode=${authCode}`)
       .then((response) => {
         const { success } = response.data;
@@ -220,10 +219,8 @@ function Signup() {
         console.error("인증 코드 검증 실패:", error);
         setAuthCodeError("인증 코드 검증 중 오류가 발생했습니다.");
       });
-
   };//이메일 인증코드 확인버튼
   
-
   //비밀번호 입력및 정규식확인
   const handleUserPassword = (e) => {
     const password = e.target.value;
@@ -259,14 +256,12 @@ function Signup() {
       <TopIcon />
     <div
   className="fullscreen-background"
-  style={{ backgroundImage: `url(${backgroundImage})` }}
-> 
+  style={{ backgroundImage: `url(${backgroundImage})` }}> 
     <div className="overlay-text">
       시골쥐의 어디가쥐</div>
       <div 
         className="container"
-        style={{height:"100vh"}}
-      >
+        style={{height:"100vh"}}>
         <main>
           <form className="form" onSubmit={handleSubmit}>
             <h3>::: 회원가입 :::</h3>
@@ -290,15 +285,13 @@ function Signup() {
                 type="button"
                 value="중복체크"
                 className="button-check"
-                onClick={handleUserIdCheck}
-              />
+                onClick={handleUserIdCheck}/>
               <input
                 type="button"
                 value={isLoading ? "발송 중..." : "인증번호 발송"}
                 className="button-verify"
                 onClick={handleEmailVerification}
-                disabled={isLoading || !userId || emailError || isEmailVerified}
-              />
+                disabled={isLoading || !userId || emailError || isEmailVerified}/>
             </div>
 
             {/* 인증 코드 입력 필드 */}
@@ -310,15 +303,13 @@ function Signup() {
                   name="authCode"
                   value={authCode}
                   onChange={handleAuthCodeChange}
-                  placeholder="인증 코드를 입력하세요"
-                />
+                  placeholder="인증 코드를 입력하세요"/>
                 {authCodeError && <span className="error-message">{authCodeError}</span>}
                 <div className="auth-code-button">
                   <input
                     type="button"
                     value="인증 코드 확인"
-                    onClick={handleAuthCodeVerification}
-                  />
+                    onClick={handleAuthCodeVerification}/>
                 </div>
               </div>
             )}
@@ -331,8 +322,7 @@ function Signup() {
                 name="userName"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
-                placeholder="Name"
-              />
+                placeholder="Name"/>
             </div>
 
             {/* 닉네임 입력 필드 */}
@@ -343,8 +333,7 @@ function Signup() {
                 name="userNickName"
                 value={userNickName}
                 onChange={(e) => setUserNickName(e.target.value)}
-                placeholder="NickName"
-              />
+                placeholder="NickName"/>
             </div>
             
             {/* 전화번호 입력 필드 */}
@@ -355,8 +344,7 @@ function Signup() {
                 name="userPhoneNumber"
                 value={userPhoneNumber}
                 onChange={handleUserPhoneNumber}
-                placeholder=" - 빼고 숫자만 입력하세요"
-              />
+                placeholder=" - 빼고 숫자만 입력하세요"/>
               {phoneNumberError && <span className="error-message">{phoneNumberError}</span>}
             </div>
 
@@ -369,9 +357,9 @@ function Signup() {
                 type="password"
                 value={userPassword}
                 onChange={handleUserPassword}
-                placeholder="Password"
-              />
-              {passwordError && <span className="error-message">{passwordError}</span>}
+                placeholder="Password"/>
+              {passwordError && <span className="error-message">{passwordError}
+              </span>}
             </div>
 
             {/* 비밀번호 확인 필드 */}
@@ -383,8 +371,7 @@ function Signup() {
                 type="password"
                 value={userPasswordConfirm}
                 onChange={(e) => setUserPasswordConfirm(e.target.value)}
-                placeholder="PasswordConfirm"
-              />
+                placeholder="PasswordConfirm"/>
             </div>
 
             {/* 제출 및 취소 버튼 */}
@@ -397,8 +384,7 @@ function Signup() {
                 onClick={() => {
                   navigate("/login")
                   setGoogleUser({});
-                }}
-              />
+                }}/>
             </div>
           </form>
 
@@ -415,13 +401,4 @@ export default Signup;
 
 # 코드설명
 
-```JS
-
-```
-```JS
-
-```
-```JS
-
-```
-```JS
+\-
