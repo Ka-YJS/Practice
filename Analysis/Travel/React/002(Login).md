@@ -5,18 +5,18 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin,GoogleOAuthProvider } from '@react-oauth/google'; // 구글 로그인 라이브러리 import
+import { GoogleLogin,GoogleOAuthProvider } from '@react-oauth/google'; //구글 로그인 라이브러리 import
 import "../css/Strat.css";
 import TopIcon from "../TopIcon/TopIcon";
-import {call} from "../api/ApiService";
+import {call} from "../api/ ApiService";
 import backgroundImage from "../image/back3.png"
 import config from "../Apikey";
 import axios from "axios";
 
 const Login = () => {
-  const { user,setUser,setGoogleUser } = useContext(UserContext); // `user` 배열로부터 사용자 정보를 가져옴
-  const [loginId, setLoginId] = useState(""); // 입력받은 ID 저장 useState
-  const [loginPassword, setLoginPassword] = useState(""); // 입력받은 비밀번호 상태 useState
+  const { user,setUser,setGoogleUser } = useContext(UserContext); //`user` 배열로부터 사용자 정보를 가져옴
+  const [loginId, setLoginId] = useState(""); //입력받은 ID 저장 useState
+  const [loginPassword, setLoginPassword] = useState(""); //입력받은 비밀번호 상태 useState
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
   const [isFindUserId,setIsFindUserId] = useState(false);
@@ -42,9 +42,7 @@ const Login = () => {
   const [findUserName,setFindUserName] = useState("");
   const [findUserPhoneNumber,setFindUserPhoneNumber] = useState("");
   const navigate = useNavigate();
-
   
-
   //이메일 정규식
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -67,7 +65,6 @@ const Login = () => {
   const toSignup = () => {
     navigate('/Signup')
   };//회원가입 버튼 종료
-
 
   //ID 찾기 팝업창 확인 버튼
   const handleFindIdConfirm = async() => {
@@ -100,23 +97,17 @@ const Login = () => {
     }
   }//ID 찾기 팝업창 확인 버튼 종료
 
-  
-
-
-
-
-
   //이메일인증버튼
   const handleEmailVerification = async () => {
 
-    // 이메일 형식 검증
+    //이메일 형식 검증
     if (!validateEmail(findUserId)) {
       alert("이메일 형식이 올바르지 않습니다.");
       return;
     }
 
     console.log()
-    // 이메일 인증 코드 발송 전에 로딩 상태로 설정
+    //이메일 인증 코드 발송 전에 로딩 상태로 설정
     setIsLoading(true);
 
     try {
@@ -132,14 +123,14 @@ const Login = () => {
       console.error("이메일 인증 코드 발송 실패:", error);
       alert("이메일 인증 코드 발송 중 오류가 발생했습니다.");
     } finally {
-      setIsLoading(false); // 로딩 상태 해제
+      setIsLoading(false);//로딩 상태 해제
     }
   };
 
   //이메일 인증코드 체크
   const handleAuthCodeChange = (e) => {
     setAuthCode(e.target.value);
-    setAuthCodeError(""); // 오류 초기화
+    setAuthCodeError("");//오류 초기화
   };
 
   //이메일 인증코드 확인버튼
@@ -149,7 +140,7 @@ const Login = () => {
       return;
     }
 
-    // 인증 코드 검증
+    //인증 코드 검증
     await axios.post(`http://${config.IP_ADD}:9090/travel/email/auth?address=${findUserId}&authCode=${authCode}`)
       .then((response) => {
         const { success } = response.data;
@@ -171,12 +162,12 @@ const Login = () => {
   //Password 찾기 팝업창 확인 버튼
   const handleFindPasswordConfirm = async () => {
     
-    // 이메일 인증 확인
+    //이메일 인증 확인
     if (!isEmailVerified) {
       alert("이메일 인증을 완료해주세요.");
       return;
     }
-    // 전화번호 정규식 검증    
+    //전화번호 정규식 검증    
     if (!validataeUserPhoneNumber(findUserPhoneNumber)) {
       alert("전화번호는 - 들어가지않은 11자리 숫자로 이루어져야 됩니다..");
       return;
@@ -239,12 +230,9 @@ const Login = () => {
         setNewPasswordConfirm("");
         setIsNewPassword(false)
       }
-
     } catch (error) {
       alert("비밀번호 변경 실패");
     }
-
-
   }
 
   //로그인 버튼
@@ -275,7 +263,6 @@ const Login = () => {
     }
   };//로그인 버튼 종료
 
-
   //Google 로그인 성공 처리
   const handleGoogleSuccess = async (response) => {
     try {
@@ -283,12 +270,12 @@ const Login = () => {
       console.log('Google Login Success:', response.credential);
       const credential = response.credential      
 
-      // JWT 디코딩하여 Google 사용자 정보 확인
+      //JWT 디코딩하여 Google 사용자 정보 확인
       try {
-        // Authorization 헤더에 Bearer 토큰 포함, payload는 본문에 전달
+        //Authorization 헤더에 Bearer 토큰 포함, payload는 본문에 전달
         const response = await axios.post('http://192.168.3.24:9090/travel/oauth2/google/callback', { credential },{
           headers: {
-              'Authorization': `Bearer ${credential}` // Google 로그인 후 받은 credential
+              'Authorization': `Bearer ${credential}` //Google 로그인 후 받은 credential
           }
         })
 
@@ -314,7 +301,7 @@ const Login = () => {
     }
   };//Google 로그인 성공 처리 종료
 
-  // Google 로그인 실패 처리
+  //Google 로그인 실패 처리
   const handleGoogleFailure = (error) => {
 
     console.error("Google Login Failure:", error);
@@ -325,7 +312,7 @@ const Login = () => {
   };
 
   const googleOAuthConfig = {
-    clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID  // 환경변수가 제대로 로드되는지 확인
+    clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID  //환경변수가 제대로 로드되는지 확인
   };
 
   //ID찾기 전화번호 입력및 정규식확인
@@ -625,20 +612,77 @@ const Login = () => {
 };
 
 export default Login;
-
 ```
 
 # 코드설명
 
 ```JS
-
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;//이메일
+const userPhoneNumberRegex = /^01\d{9}$/;//전화번호
+const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;//비밀번호
 ```
+1. /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  - ^ : 문자열 시작
+  - [^\s@]+ : 공백과 @ 이외의 문자가 1개 이상
+  - @ : @ 문자
+  - \\.: 점(마침표)
+  - $: 문자열 끝
+2. /^01\d{9}$/
+  - 01 : "01"로 시작
+  - \d{9} : 숫자가 9개
+3. /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/
+  - (?=.*[!@#$%^&*(),.?":{}|<>]) : 특수문자 최소 1개 포함
+  - .{8,} : 모든 문자가 8개 이상
 ```JS
-
+const response = await axios.get(`http://${config.IP_ADD}:9090/travel/email/auth?address=${findUserId}`);
 ```
+1. axios
+  - HTTP 클라이언트 라이브러리로 서버와의 HTTP 통신을 쉽게 할 수 있게 해줌
+  - Promise 기반으로 동작 -> axios가 비동기 작업을 Promise를 사용하여 처리하며, 이를 통해 더 깔끔하고 관리하기 쉬운 코드를 작성할 수 있다는 의미함
+2. ${config.IP_ADD}
+  - 백틱(`)으로 둘러싸인 문자열 안에서 ${} 형식으로 변수 사용
+  - config 객체에서 IP_ADD 값을 가져옴
 ```JS
-
+//이메일 인증코드 체크
+const handleAuthCodeChange = (e) => {
+  setAuthCode(e.target.value);
+  setAuthCodeError("");//오류 초기화
+};
 ```
+1. e.target.value
+  - e : 이벤트 객체
+  - e.target : 이벤트가 발생한 HTML요소
+  - e.target.value : 해당 요소의 값
 ```JS
+//인증 코드 검증
+await axios.post(`http://${config.IP_ADD}:9090/travel/email/auth?address=${findUserId}&authCode=${authCode}`)
+  .then((response) => {
+    const { success } = response.data;
+    if (success) {
+      setIsEmailVerified(true);
+      alert("이메일 인증이 완료되었습니다.");
+    } else {
+      setAuthCodeError("인증 코드가 일치하지 않습니다.");
+    }
+  })
+  .catch((error) => {
+    console.error("인증 코드 검증 실패:", error);
+    setAuthCodeError("인증 코드 검증 중 오류가 발생했습니다.");
+  });
 
 ```
+1. const { success } = response.data;
+  - 객체 비구조화 할당: response.data 객체에서 success 속성을 추출함
+  - 비구조화 할당(Destructuring Assignment)이란? 배열이나 객체의 속성을 해체하여 그 값을 개별 변수에 담을 수 있게 하는 JavaScript 표현식임
+  <br>(코드를 더 간단하고 읽기 쉽게 작성가능, 데이터 변환은 없음->단순히 객체나 배열의 값을 변수에 할당함)
+2. .then().catch()
+  - Promise체이닝 : Promise를 연속적으로 연결하여 사용하는 방법으로, .then()의 결과가 다음 .then()으로 전달되는 구조임
+  - .then() : 성공 시 실행될 콜백
+  - .catch() : 실패 시 실행될 콜백(어디에서든 발생할 수 있는 에러를 처리함)
+```JS
+{emailError && <span className="error-message">{emailError}</span>}
+```
+1. <span>
+  - 인라인 텍스트를 감싸는 HTML 태그
+  - 주로 작은 텍스트 블록이나 인라인 요소를 그룹화할 때 사용
+  - 여기서는 에러 메시지를 표시하는 데 사용됨
