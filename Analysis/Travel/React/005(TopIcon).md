@@ -6,9 +6,9 @@ import { SlHome } from "react-icons/sl";
 import { LuNotebook } from "react-icons/lu";
 import { MdNoteAlt } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../context/UserContext"; // UserContext import
+import { UserContext } from "../context/UserContext";//UserContext import
 import { Collapse } from "react-bootstrap";
-import PersonalInfo from "../pages/PersonalInfo"; // PersonalInfo 컴포넌트 import
+import PersonalInfo from "../pages/PersonalInfo";//PersonalInfo 컴포넌트 import
 import "../css/MyPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import defaultImage from '../image/defaultImage.png';
@@ -17,8 +17,8 @@ import config from "../Apikey";
 
 const TopIcon = ({text}) => {
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] = useState(false);
-  const [isMyInfoVisible, setIsMyInfoVisible] = useState(false); // Collapse 상태 관리
-  const { user } = useContext(UserContext); // userNickName 가져오기
+  const [isMyInfoVisible, setIsMyInfoVisible] = useState(false);//Collapse 상태 관리
+  const { user } = useContext(UserContext);//userNickName 가져오기
   const navigate = useNavigate();
 
   const iconComponents = [
@@ -45,36 +45,31 @@ const TopIcon = ({text}) => {
         alignItems: "center",
         height:"90px",
         width: "100%",  
-
-      }}
-    >
+      }}>
       <div>
         <Logo/>
       </div>
       <div
         style={{
-          fontSize: "50px", // 글자 크기 설정
-          fontWeight: "bold", // 두껍게
-          position: "absolute", // 절대 위치 설정
-          top: "50%", // 수직 가운데
-          left: "50%", // 수평 가운데
-          transform: "translate(-50%, -50%)", // 실제 가운데로 맞추기 위해 이동
-          color: "transparent", // 기본 색상을 투명으로 설정
-          backgroundImage: "linear-gradient(90deg, #d18a38,rgb(248, 185, 112))", // 그라데이션 색상
-          WebkitBackgroundClip: "text", // 텍스트에만 배경색 적용
-          backgroundClip: "text", // 텍스트에만 배경색 적용
-          textShadow: "2px 2px 5px rgba(0, 0, 0, 0.3)", // 텍스트 그림자
-          textAlign: "center", // 가운데 정렬
-          
-        }}
-      >
+          fontSize: "50px",//글자 크기 설정
+          fontWeight: "bold",//두껍게
+          position: "absolute",//절대 위치 설정
+          top: "50%",//수직 가운데
+          left: "50%",//수평 가운데
+          transform: "translate(-50%, -50%)",//실제 가운데로 맞추기 위해 이동
+          color: "transparent",//기본 색상을 투명으로 설정
+          backgroundImage: "linear-gradient(90deg, #d18a38,rgb(248, 185, 112))",//그라데이션 색상
+          WebkitBackgroundClip: "text",//텍스트에만 배경색 적용
+          backgroundClip: "text",//텍스트에만 배경색 적용
+          textShadow: "2px 2px 5px rgba(0, 0, 0, 0.3)",//텍스트 그림자
+          textAlign: "center",//가운데 정렬     
+        }}>
         {text}
       </div>
       {/* 아이콘 영역 */}
       <div
         className="icon-container"
-        style={{  display: "flex", alignItems: "center", gap: "15px", position: "relative" }}
-      >
+        style={{  display: "flex", alignItems: "center", gap: "15px", position: "relative" }}>
         {iconComponents.map((icon) => (
           <div
             key={icon.id}
@@ -85,10 +80,8 @@ const TopIcon = ({text}) => {
               flexDirection: "column",
               alignItems: "center",
               position: "relative",
-              
             }}
-            onClick={() => navigate(icon.route)}
-          >
+            onClick={() => navigate(icon.route)}>
             {icon.component}
             {/* 텍스트 부분 */}
             <span className="tooltip" style={{ fontSize: "13px", whiteSpace: 'nowrap' , }}>
@@ -97,7 +90,6 @@ const TopIcon = ({text}) => {
           </div>
         ))}
       </div>
-
       {/* 프로필 영역 */}
       <div className="profile-container" style={{ position: "relative"}}>
         <div
@@ -107,9 +99,8 @@ const TopIcon = ({text}) => {
             alignItems: "center",
             marginTop: "20px",
             marginRight:"20px",
-            width: "100px", // 고정 너비 설정
-          }}
-        >
+            width: "100px",//고정 너비 설정
+          }}>
           <img
             style={{
               width: "70px",
@@ -124,27 +115,22 @@ const TopIcon = ({text}) => {
                 setIsMyInfoVisible(false)
               }
               setIsProfileDropdownVisible(!isProfileDropdownVisible)
-            
-            }}
-          />
+            }}/>
           <div
             style={{
-              width: "100px", // 컨테이너 너비 고정
-              overflow: "hidden", // 넘치는 텍스트 숨기기
-              whiteSpace: "nowrap", // 텍스트를 한 줄로 유지
-              position: "relative", // 내부 요소에 대한 위치 기준
-              
-            }}
-          >
+              width: "100px",//컨테이너 너비 고정
+              overflow: "hidden",//넘치는 텍스트 숨기기
+              whiteSpace: "nowrap",//텍스트를 한 줄로 유지
+              position: "relative",//내부 요소에 대한 위치 기준              
+            }}>
             <p
               style={{
-                display: "inline-block", // 텍스트가 슬라이드될 수 있도록 인라인 블록 설정
-                animation: "slide 15s linear infinite", // 슬라이드 애니메이션
+                display: "inline-block",//텍스트가 슬라이드될 수 있도록 인라인 블록 설정
+                animation: "slide 15s linear infinite",//슬라이드 애니메이션
                 fontSize:"20px",
                 color:"#d18a38"
               }}
-              className="sliding-text"
-            >
+              className="sliding-text">
               시골쥐 {user.userNickName || "시골쥐"}님
             </p>
           </div>
@@ -162,8 +148,7 @@ const TopIcon = ({text}) => {
               border: "1px solid #ddd",
               borderRadius: "5px",
               zIndex: 10,
-            }}
-          >
+            }}>
             <button
               style={{
                 margin: "5px",
@@ -173,8 +158,7 @@ const TopIcon = ({text}) => {
                 border: "none",
                 borderRadius: "5px",
               }}
-              onClick={() =>setIsMyInfoVisible(!isMyInfoVisible)}
-            >
+              onClick={() =>setIsMyInfoVisible(!isMyInfoVisible)}>
               내 정보
             </button>
             <Collapse in={isMyInfoVisible}>
@@ -194,8 +178,7 @@ const TopIcon = ({text}) => {
               onClick={() => {
                 navigate(`/mypost/${user.id}`);
                 setIsProfileDropdownVisible(!isProfileDropdownVisible)
-              }}
-            >
+              }}>
               내 기록보기
             </button>
             <button
@@ -207,8 +190,7 @@ const TopIcon = ({text}) => {
                 border: "none",
                 borderRadius: "5px",
               }}
-              onClick={handleLogout}
-            >
+              onClick={handleLogout}>
               로그아웃
             </button>
           </div>
@@ -220,20 +202,23 @@ const TopIcon = ({text}) => {
 };
 
 export default TopIcon;
-
 ```
 
 # 코드설명
 
 ```JS
-
+import { Collapse } from "react-bootstrap";
 ```
-```JS
-
-```
-```JS
-
-```
-```JS
-
-```
+1. Collapse
+  - React Bootstrap에서 제공하는 컴포넌트로, 콘텐츠를 접었다 펼 수 있는 애니메이션 효과를 구현하는데 사용됨
+  - 현재코드에서 구현
+  ```JS
+  <Collapse in={isMyInfoVisible}>
+    <div style={{ height: 'auto' }}>
+      <PersonalInfo />
+    </div>
+  </Collapse>
+  ```
+    - in prop으로 Collapse의 상태를 제어함(true: 펼침, false: 접힘)
+    - PersonalInfo 컴포넌트를 Collapse로 감싸서 토글 가능하게 만듦
+    - height: 'auto'로 설정하여 내부 컨텐츠의 높이에 따라 자동으로 조절되게 함
