@@ -9,7 +9,7 @@ import { UserContext } from "../context/UserContext";
 import defaultImage from "../image/defaultImage.png";
 import '../css/MyPage.css';
 import { IoPencil } from "react-icons/io5";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa  ";
 import {call} from "../api/ApiService";
 import axios from "axios";
 import config from "../Apikey";
@@ -79,7 +79,6 @@ const PersonalInfo = () => {
     }
   };//닉네임변경 버튼 종료
 
-
   //비밀번호변경 버튼
   const handleChangePassword = async () => {
 
@@ -117,9 +116,7 @@ const PersonalInfo = () => {
     } catch (error) {
       console.error('비밀번호변경 실패:', error);
     }
-
   };//비밀번호변경 버튼 종료
-
 
   //숨겨놓은 fileInput 클릭버튼
   const handleButtonClick = () => {
@@ -132,13 +129,13 @@ const PersonalInfo = () => {
     const file = e.target.files[0];
 
     if (file) {
-      // FormData 객체를 사용해 파일과 기타 데이터를 전송
+      //FormData 객체를 사용해 파일과 기타 데이터를 전송
       const formData = new FormData();
       formData.append('file', file);
       console.log(formData.get('file'))
 
       try {
-        // 백엔드에 프로필 사진을 업로드
+        //백엔드에 프로필 사진을 업로드
         const response = await axios.patch(`http://${config.IP_ADD}:9090/travel/userProfileImageEdit/${user.id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -157,7 +154,6 @@ const PersonalInfo = () => {
       }    
     }
   };//프로필이미지번경 버튼
-
 
   //프로필이미지 삭제 버튼
   const handleProfileImageDelete = async () => {
@@ -188,7 +184,6 @@ const PersonalInfo = () => {
 
   }//프로필이미지 삭제 버튼
 
-
   //계정탈퇴 버튼
   const handleDeleteAccount = async() => {
     
@@ -207,13 +202,11 @@ const PersonalInfo = () => {
       }else{
         alert("계정 탈퇴실패 비밀번호확인");
       }
-      
     } catch (error) {
       console.error('계정탈퇴 실패:', error);
     }
 
   };//계정탈퇴 버튼 종료
-
 
   return (
     <div className="page_wrapper">
@@ -221,7 +214,7 @@ const PersonalInfo = () => {
         <div className="profile_wrapper ">
           <img
             className="profile_image"
-            //                          D:\Aproject\Travel_2024\Spring\travel\uploads
+            //                         D:\Aproject\Travel_2024\Spring\travel\uploads
             src={user.userProfileImage?`http://${config.IP_ADD}:9090${user.userProfileImage}`: defaultImage}
             alt="profile"
           />
@@ -355,20 +348,27 @@ const PersonalInfo = () => {
 };
 
 export default PersonalInfo;
-
 ```
 
 # 코드설명
 
 ```JS
+import Modal from 'react-modal';
 
+Modal.setAppElement('#root');
 ```
+1. Modal이란?
+  - Modal은 팝업창을 만드는 React 컴포넌트 라이브러리임
+  - 화면 위에 떠있는 대화상자를 만들 때 사용됨
+2. setAppElement('#root')
+  - 모달의 접근성(accessibility)을 위한 설정으로 스크린리더를 지원함
+  - 모달이 열렸을 때 메인 앱의 내용을 가리는 역할을 함
 ```JS
-
+if (file) {
+  const formData = new FormData();
+  formData.append('file', file);
+  console.log(formData.get('file')) ...}
 ```
-```JS
-
-```
-```JS
-
-```
+1. formData.append
+  - FormData는 폼 필드와 값들을 쉽게 구성할 수 있게 해주는 인터페이스임
+  - 주로 파일을 업로드할 때 사용되며, append() 메서드로 키-값 쌍을 추가할 수 있음
