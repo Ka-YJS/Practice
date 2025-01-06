@@ -27,20 +27,8 @@ const MyPage = () => {
 };
 
 export default MyPage;
-
 ```
 
 # 코드설명
 
-```JS
-
-```
-```JS
-
-```
-```JS
-
-```
-```JS
-
-```
+\-

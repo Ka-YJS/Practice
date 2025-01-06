@@ -20,11 +20,11 @@ const Post = () => {
     const { user } = useContext(UserContext);
     const { postList, setPostList } = useContext(PostContext);
     const [likedPosts, setLikedPosts] = useState({});
-    const [searchQuery, setSearchQuery] = useState(""); // 검색어
-    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-    const postsPerPage = 10; // 페이지당 게시물 수
+    const [searchQuery, setSearchQuery] = useState("");//검색어
+    const [currentPage, setCurrentPage] = useState(1);//현재 페이지
+    const postsPerPage = 10;//페이지당 게시물 수
 
-    // 서버에서 게시물 가져오기
+   //서버에서 게시물 가져오기
     const getPostList = async () => {
         try {
             const response = await axios.get(`http://${config.IP_ADD}:9090/travel/posts`, {
@@ -35,8 +35,7 @@ const Post = () => {
 
             const fetchedPosts = response.data.data;
 
-
-            // 좋아요 상태 한번에 가져오기
+           //좋아요 상태 한번에 가져오기
             const likedStatusPromises = fetchedPosts.map((post) =>
                 axios.get(`http://${config.IP_ADD}:9090/travel/likes/${post.postId}/isLiked`, {
                     headers: { 
@@ -47,27 +46,27 @@ const Post = () => {
             })
             );
 
-            // 모든 API 호출 완료 후, 상태 설정
+           //모든 API 호출 완료 후, 상태 설정
             const likedStatusResponses = await Promise.all(likedStatusPromises);
             const likedStatus = likedStatusResponses.reduce((acc, response, index) => {
                 acc[fetchedPosts[index].postId] = response.data;
                 return acc;
             }, {});
 
-            setLikedPosts(likedStatus); // 좋아요 상태 업데이트
-            setPostList(fetchedPosts); // 게시물 리스트 설정
+            setLikedPosts(likedStatus);//좋아요 상태 업데이트
+            setPostList(fetchedPosts);//게시물 리스트 설정
 
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
     };
 
-    // 컴포넌트 마운트 시 게시물 가져오기
+   //컴포넌트 마운트 시 게시물 가져오기
     useEffect(() => {
         getPostList();
     }, []);
 
-    // 검색 및 필터링
+   //검색 및 필터링
     const filteredPosts = Array.isArray(postList)
         ? postList.filter((post) =>
             searchQuery === "" ||
@@ -75,28 +74,28 @@ const Post = () => {
         )
         : [];
 
-    // 게시물 순서를 역순으로 변경
+   //게시물 순서를 역순으로 변경
     const reversedPosts = filteredPosts.slice().reverse();
 
-    // 페이지네이션 계산
-    const totalPages = Math.ceil(filteredPosts.length / postsPerPage); // 전체 페이지 수
-    const indexOfLastPost = currentPage * postsPerPage; // 현재 페이지 마지막 게시물 인덱스
-    const indexOfFirstPost = indexOfLastPost - postsPerPage; // 현재 페이지 첫 게시물 인덱스
-    const currentPosts = reversedPosts.slice(indexOfFirstPost, indexOfLastPost); // 현재 페이지에 표시할 게시물
+   //페이지네이션 계산
+    const totalPages = Math.ceil(filteredPosts.length / postsPerPage);//전체 페이지 수
+    const indexOfLastPost = currentPage * postsPerPage;//현재 페이지 마지막 게시물 인덱스
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;//현재 페이지 첫 게시물 인덱스
+    const currentPosts = reversedPosts.slice(indexOfFirstPost, indexOfLastPost);//현재 페이지에 표시할 게시물
 
-    // 페이지 변경
+   //페이지 변경
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
-    // 글쓰기 페이지 이동
+   //글쓰기 페이지 이동
     const toWritePage = () => {
-        // setList([])
-        // setPlaceList([])
+       //setList([])
+       //setPlaceList([])
         navigate("/map");
     };
 
-    // 좋아요 버튼 클릭
+   //좋아요 버튼 클릭
     const likeButtonClick = async (postId) => {
         try {
             const isLiked = likedPosts[postId];
@@ -105,13 +104,13 @@ const Post = () => {
 
             await axios({ method, url, headers: { Authorization: `Bearer ${user.token}` } });
 
-            // 좋아요 상태 업데이트
+           //좋아요 상태 업데이트
             setLikedPosts((prev) => ({
                 ...prev,
                 [postId]: !isLiked,
             }));
 
-            // 게시물의 좋아요 수 업데이트
+           //게시물의 좋아요 수 업데이트
             setPostList((prev) =>
                 prev.map((post) =>
                     post.postId === postId
@@ -125,14 +124,13 @@ const Post = () => {
         }
     };
 
-    // 게시글 상세 페이지 이동
+   //게시글 상세 페이지 이동
     const handlePostClick = (id) => {
         navigate(`/postdetail/${id}`, { state: { from: `/post` } });
     };
 
     return (
-        <div style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover", backgroundPosition: "center"
- }} >
+        <div style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover", backgroundPosition: "center"}} >
             <TopIcon text="기록일지" />
             <div className="post">
                 <table>
@@ -141,20 +139,18 @@ const Post = () => {
                             className="post_list"
                             style={{
                                 display: "flex",
-                                flexWrap: "wrap", // 아이템들이 화면에 맞게 줄 바꿈
-                                justifyContent: "left", // 중앙 정렬
-                                gap: "39px", // 아이템들 간의 간격
+                                flexWrap: "wrap",//아이템들이 화면에 맞게 줄 바꿈
+                                justifyContent: "left",//중앙 정렬
+                                gap: "39px",//아이템들 간의 간격
                                 margin: "0 auto",
-                                maxWidth: "1100px", // 최대 너비 설정
-                                
-                            }}
-                        >
+                                maxWidth: "1100px",//최대 너비 설정
+                            }}>
                             {currentPosts.length > 0 ? (
                                 currentPosts.map((post) => (
                                     <td
                                         key={post.postId}
                                         style={{
-                                            width: "180px", // 각 게시물의 너비
+                                            width: "180px",//각 게시물의 너비
                                             textAlign: "center",
                                             cursor: "pointer",
                                         }}
@@ -196,16 +192,14 @@ const Post = () => {
                                                     {post.likes}
                                                 </span>
                                             </span>
-
                                         </div>
                                         <div
                                             style={{
                                                 display: "flex",
                                                 flexDirection: "column",
-                                                alignItems: "flex-end", // 오른쪽 정렬
-                                                marginRight: "10px", // 오른쪽 여백 추가
-                                            }}
-                                        >
+                                                alignItems: "flex-end",//오른쪽 정렬
+                                                marginRight: "10px",//오른쪽 여백 추가
+                                            }}>
                                             <h3
                                                 style={{
                                                     margin: 0,
@@ -213,9 +207,8 @@ const Post = () => {
                                                     whiteSpace: "nowrap", /* 한 줄로 제한 */
                                                     overflow: "hidden",   /* 넘치는 텍스트 숨기기 */
                                                     textOverflow: "ellipsis", /* 넘치면 '...'으로 표시 */
-                                                    textAlign: "right", // 오른쪽 정렬
-                                                }}
-                                            >
+                                                    textAlign: "right",//오른쪽 정렬
+                                                }}>
                                                 {post.postTitle}
                                             </h3>
                                             <div>
@@ -241,15 +234,13 @@ const Post = () => {
                         justifyContent: "flex-end",
                         marginTop: "20px",
                         gap: "20px",
-                         // 버튼 간 간격
-                    }}
-                >
+                        //버튼 간 간격
+                    }}>
                     <Button
                         variant="contained"
                         onClick={() => navigate(`/mypost/${user.id}`)}
                         sx={{ width: "10%", backgroundColor: "#4caf50", fontFamily: "'GowunDodum-Regular', sans-serif"
-                         }}
-                    >
+                         }}>
                         나의 기록
                     </Button>
                     <Button
@@ -259,8 +250,7 @@ const Post = () => {
                             width: "10%",
                             backgroundColor: "#4caf50",
                             fontFamily: "'GowunDodum-Regular', sans-serif"
-                        }}
-                    >
+                        }}>
                         기록하기
                     </Button>
                 </div>
@@ -272,8 +262,7 @@ const Post = () => {
                         display: "flex",
                         justifyContent: "center",
                         gap: "5px",
-                    }}
-                >
+                    }}>
                     {Array.from({ length: totalPages }, (_, index) => (
                         <button
                             key={index + 1}
@@ -287,8 +276,7 @@ const Post = () => {
                                 border: "1px solid #ddd",
                                 borderRadius: "5px",
                                 cursor: "pointer",
-                            }}
-                        >
+                            }}>
                             {index + 1}
                         </button>
                     ))}
@@ -318,20 +306,30 @@ const Post = () => {
 };
 
 export default Post;
-
 ```
 
 # 코드설명
 
 ```JS
-
+const likedStatusResponses = await Promise.all(likedStatusPromises);
 ```
+1. Promise.all()
+    - 여러 개의 Promise를 동시에 처리하는 메서드
+    - 모든 Promise가 완료될 때까지 기다린 후 결과를 배열로 반환
+    - 이 코드에서는 여러 게시물의 좋아요 상태를 한 번에 가져오는데 사용됨
 ```JS
-
+const filteredPosts = Array.isArray(postList)
+    ? postList.filter((post) =>
+        searchQuery === "" ||
+        (post.postTitle && post.postTitle.toLowerCase().includes(searchQuery.toLowerCase()))
+    )
+    : [];
 ```
-```JS
-
-```
-```JS
-
-```
+1. 코드해석
+    - filter() 메서드로 검색 조건에 맞는 게시물만 선택
+        1. 검색어가 없는 경우(searchQuery === "")
+        2. 게시물 제목에 검색어가 포함된 경우(post.postTitle.toLowerCase().includes(searchQuery.toLowerCase()))
+    - toLowerCase() : 대소문자 구분 없이 검색함
+2. Array.isArray(postList) ? ... : []
+    - Array.isArray(postList) : postList가 배열인지 확인
+    - 삼항 연산자 -> postList가 배열이면 필터링 실행, 배열이 아니면 빈 배열([]) 반환
