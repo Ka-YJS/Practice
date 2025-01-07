@@ -13,7 +13,7 @@ import { CopyListContext } from "../context/CopyListContext";
 import { CopyPlaceListContext } from "../context/CopyPlaceListContext";
 import backgroundImage from "../image/flowers.png";
 
-// 컴포넌트 외부에서 libraries 배열을 정의
+//컴포넌트 외부에서 libraries 배열을 정의
 const libraries = ["places"];
 
 const MapEdit = () => {
@@ -141,7 +141,7 @@ const MapEdit = () => {
                     <GoogleMap
                         mapContainerStyle={{
                             width: "100%",
-                            height: "100%", // 원하는 높이로 설정 (450px)
+                            height: "100%", //원하는 높이로 설정 (450px)
                         }}
                         center={center}
                         zoom={14}
@@ -206,6 +206,35 @@ export default MapEdit;
 ```
 
 # 코드설명
+
+```JS
+const libraries = ["places"];
+```
+1. Google Maps JavaScript API에서 사용할 라이브러리를 지정하는 부분임
+2. 이 라이브러리를 컴포넌트 외부에서 정의하는 이유는 불필요한 재렌더링을 방지하고, useJsApiLoader가 매번 새로운 libraries 배열을 참조하는 것을 막기 위해서임임
+3. Libraries의 목적
+    - Google Maps JavaScript API는 기본 기능 외에도 여러 추가 라이브러리를 제공함
+    - 이러한 라이브러리들은 필요할 때만 로드하여 성능을 최적화할 수 있음
+    - places 라이브러리는 장소 검색, 자동완성, 장소 세부정보 등의 기능을 제공함
+    - 여기서는 아래 코드에서 쓰였음
+    ```JS
+    const { isLoaded, loadError } = useJsApiLoader({
+        googleMapsApiKey: config.MAP_API_KEY,
+        libraries: libraries, //바로 여기!!
+        language:"ko"
+    });
+    ```
+4. places 라이브러리가 제공하는 주요 기능들
+    - 장소 검색 (Place Search)
+    - 주소 자동완성 (Autocomplete)
+    - 장소 세부 정보 (Place Details)
+    - 장소 사진 (Place Photos)
+    - 장소 리뷰 (Place Reviews)
+5. 코드에서 실제 사용되는 places 기능
+    - <Autocomplete\> 컴포넌트를 통한 장소 검색 자동완성
+    - 검색된 장소의 위치 정보 (geometry)
+    - 장소 이름 (place.name)
+    - 주소 정보 (place.formatted_address)
 
 ```JS
 const handleMapClick = async (event) => {
