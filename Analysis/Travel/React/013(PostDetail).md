@@ -10,18 +10,18 @@ import TopIcon from "../TopIcon/TopIcon";
 import config from "../Apikey";
 
 const PostDetail = () => {
-    const { user } = useContext(UserContext); // 사용자 정보
-    const { id } = useParams(); // 게시글 IDa
+    const { user } = useContext(UserContext);//사용자 정보
+    const { id } = useParams();//게시글 IDa
     const [previousPath, setPreviousPath] = useState(null);
     const [post, setPost] = useState({});
     const [imageUrls, setImageUrls] = useState([]);
-    const [isLiked, setIsLiked] = useState(false); // 좋아요 상태
-    const [likeCount, setLikeCount] = useState(0); // 좋아요 개수
+    const [isLiked, setIsLiked] = useState(false);//좋아요 상태
+    const [likeCount, setLikeCount] = useState(0);//좋아요 개수
 
     const navigate = useNavigate();
-    const location = useLocation(); // 현재 위치 추적
+    const location = useLocation();//현재 위치 추적
 
-    // 게시글 상세 데이터 가져오기
+   //게시글 상세 데이터 가져오기
     const getPostDetail = async () => {
         try {
             const response = await axios.get(`http://${config.IP_ADD}:9090/travel/posts/postDetail/${id}`, {
@@ -34,15 +34,15 @@ const PostDetail = () => {
             const data = response.data.data[0];
             setPost(data);
             setImageUrls(data.imageUrls || []);
-            setLikeCount(data.likes || 0); // 초기 좋아요 개수 설정
+            setLikeCount(data.likes || 0);//초기 좋아요 개수 설정
         } catch (error) {
             console.error("Error fetching post details:", error);
             alert("게시글 정보를 불러오는 중 오류가 발생했습니다.");
-            navigate(-1); // 이전 페이지로 이동
+            navigate(-1);//이전 페이지로 이동
         }
     };
 
-    // 좋아요 상태 가져오기
+   //좋아요 상태 가져오기
     const getLikeStatus = async () => {
         try {
             const response = await axios.get(`http://${config.IP_ADD}:9090/travel/likes/${id}/isLiked`, {
@@ -52,20 +52,20 @@ const PostDetail = () => {
                 },
                     withCredentials: true
             });
-            setIsLiked(response.data); // 좋아요 상태 설정
+            setIsLiked(response.data);//좋아요 상태 설정
         } catch (error) {
             console.error("Error fetching like status:", error);
         }
     };
 
-    // 좋아요 버튼 클릭
+   //좋아요 버튼 클릭
     const likeButtonClick = async () => {
         try {
             console.log("isLiked"+isLiked)
             const url = `http://${config.IP_ADD}:9090/travel/likes/${id}`;
-            const method = isLiked ? "delete" : "post"; // Toggle between POST and DELETE
+            const method = isLiked ? "delete" : "post";//Toggle between POST and DELETE
     
-            // Make the API request to toggle like status
+           //Make the API request to toggle like status
             const response = await axios({
                 method,
                 url,
@@ -84,14 +84,14 @@ const PostDetail = () => {
         }
     };
 
-    // 페이지 이동 전 이전 경로를 저장
+   //페이지 이동 전 이전 경로를 저장
     useEffect(() => {
         setPreviousPath(location.state?.from);
     }, [location]);
 
     useEffect(() => {
         getPostDetail();
-        getLikeStatus(); // 좋아요 상태 가져오기
+        getLikeStatus();//좋아요 상태 가져오기
     }, []);
 
     if (!post) {
@@ -105,21 +105,21 @@ const PostDetail = () => {
         );
     }
 
-    // 목록 버튼 클릭
+   //목록 버튼 클릭
     const listButtonClick = () => {
         if (previousPath && previousPath.includes(`/mypost/${user.id}`)) {
-            navigate(`/mypost/${user.id}`); // 이전 경로로 이동
+            navigate(`/mypost/${user.id}`);//이전 경로로 이동
         } else {
             navigate("/post");
         }
     };
 
-    // 수정 버튼 클릭
+   //수정 버튼 클릭
     const toPostEdit = () => {
         navigate(`/postEdit/${id}`, { state: { from: location.state?.from } });
     };
 
-    // 삭제 버튼 클릭
+   //삭제 버튼 클릭
     const handleDelete = async () => {
         if (window.confirm("게시글을 삭제하시겠습니까?")) {
             try {
@@ -133,7 +133,7 @@ const PostDetail = () => {
                 if (response.data) {
                     alert("삭제되었습니다.");
                     if (previousPath && previousPath.includes(`/mypost/${user.id}`)) {
-                        navigate(`/mypost/${user.id}`); // 이전 경로로 이동
+                        navigate(`/mypost/${user.id}`);//이전 경로로 이동
                     } else {
                         navigate("/post");
                     }
@@ -173,7 +173,7 @@ const PostDetail = () => {
                     />
                     {/* 작성자 */}
                     <TextField
-                        style={{ marginBottom: "20px" }} // 여백 추가
+                        style={{ marginBottom: "20px" }}//여백 추가
                         InputProps={{
                             readOnly: true,
                         }}
@@ -184,7 +184,7 @@ const PostDetail = () => {
                     />
                     {/* 여행지 */}
                     <TextField
-                        style={{ marginBottom: "20px" }} // 여백 추가
+                        style={{ marginBottom: "20px" }}//여백 추가
                         inputProps={{
                             readOnly: true,
                         }}
@@ -195,7 +195,7 @@ const PostDetail = () => {
                     />
                     {/* 내용 */}
                     <TextField
-                        style={{ marginBottom: "20px"}} // 여백 추가
+                        style={{ marginBottom: "20px"}}//여백 추가
                         InputProps={{
                             readOnly: true,
                         }}
@@ -257,9 +257,9 @@ const PostDetail = () => {
                                 padding: "0px",
                                 margin: "0px",
                                 background: "none",
-                                border: "none", // 테두리 제거
-                                outline: "none", // 외부 테두리 제거
-                                cursor: "pointer", // 클릭 커서 스타일
+                                border: "none",//테두리 제거
+                                outline: "none",//외부 테두리 제거
+                                cursor: "pointer",//클릭 커서 스타일
                             }}
                         >
                 <span style={{ fontSize: "25px" }}> {/* Increase font size here */}
@@ -315,14 +315,30 @@ export default PostDetail;
 # 코드설명
 
 ```JS
-
+const navigate = useNavigate();
+const location = useLocation();
 ```
-```JS
-
-```
-```JS
-
-```
-```JS
-
-```
+1. useNavigate기능
+    - React Router의 Hook으로, 프로그래밍 방식으로 페이지 이동을 할 수 있게 해줌
+    - 여기서 사용된 코드
+    ```JS
+    navigate(-1)//이전페이지로 이동함
+    navigate("/post") 
+    navigate(`/mypost/${user.id}`)
+    navigate(`/postEdit/${id}`, { state: { from: location.state?.from } })//현재state를 반영해서 이동함
+    ```
+2. useLocation기능
+    - 현재 URL의 정보를 가져오는 Hook임
+    - 페이지의 경로, 상태(state), 쿼리 파라미터 등의 정보를 제공함
+    - 코드에서는 주로 이전 경로를 추적하는데 사용됨
+    ```JS
+    useEffect(() => {
+        setPreviousPath(location.state?.from);
+    }, [location]);
+    ```
+    - Hook은 함께 사용되어 다음과 같은 기능을 구현함
+        1. 게시글 목록으로 돌아갈 때 이전 페이지를 기억함
+        2. 수정 페이지로 이동할 때 이전 경로 정보 전달함
+        3. 삭제 후 적절한 페이지로 이동함
+        4. 오류 발생 시 이전 페이지로 되돌아감
+        5. 이 코드에서는 사용자가 마이페이지에서 왔는지 일반 게시글 목록에서 왔는지를 구분하여 적절한 페이지로 이동시키는데 활용되고 있음
