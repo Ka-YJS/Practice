@@ -23,11 +23,11 @@ const PostEdit = () => {
     const [existingImageUrls, setExistingImageUrls] = useState([]);
     const [previousPath, setPreviousPath] = React.useState(null);
 
-    const location = useLocation();  // 현재 위치 추적
+    const location = useLocation();//현재 위치 추적
     const navigate = useNavigate();
-    const { id } = useParams(); // URL에서 게시글 ID 가져오기
+    const { id } = useParams();//URL에서 게시글 ID 가져오기
 
-    // 게시글 데이터 불러오기
+   //게시글 데이터 불러오기
     useEffect(() => {
         const fetchPostDetails = async () => {
             try {
@@ -38,18 +38,15 @@ const PostEdit = () => {
                     },
                         withCredentials: true
                 });
-                
                 const postData = response.data.data[0];
                 setPostTitle(postData.postTitle);
                 setPostContent(postData.postContent);
                 setExistingImageUrls(postData.imageUrls || []);
                 
-                // 여행지 리스트 설정
+               //여행지 리스트 설정
                 setCopyPlaceList(postData.placeList);
                 setCopyList(postData.placeList)
                 console.log(postData.placeList)
-                    
-                
             } catch (error) {
                 console.error("게시글 정보 불러오기 실패:", error);
                 alert("게시글 정보를 불러오는 중 오류가 발생했습니다.");
@@ -59,36 +56,36 @@ const PostEdit = () => {
         fetchPostDetails();
     }, [id, user.token, setCopyList]);
 
-    // 페이지 이동 전 이전 경로를 저장
+   //페이지 이동 전 이전 경로를 저장
     useEffect(() => {
         setPreviousPath(location.state?.from);
     }, [location]);
 
-    // 파일 추가 핸들러
+   //파일 추가 핸들러
     const handleAddImages = (e) => {
         const files = Array.from(e.target.files);
         
-        // 10개 이미지 제한 (기존 이미지 + 새 이미지)
+       //10개 이미지 제한 (기존 이미지 + 새 이미지)
         if (existingImageUrls.length + selectedFiles.length + files.length > 10) {
             alert("최대 10개의 이미지만 업로드 가능합니다.");
             return;
         }
 
-        // 파일 정보와 미리보기 URL 설정
+       //파일 정보와 미리보기 URL 설정
         setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
         const newPreviews = files.map((file) => URL.createObjectURL(file));
         setPreviewUrls((prevUrls) => [...prevUrls, ...newPreviews]);
     };
 
-    // 이미지 삭제 핸들러
+   //이미지 삭제 핸들러
     const handleDeleteImage = (index, isExisting = false) => {
         if (isExisting) {
-            // 기존 이미지 삭제
+           //기존 이미지 삭제
             setExistingImageUrls((prevUrls) => 
                 prevUrls.filter((_, idx) => idx !== index)
             );
         } else {
-            // 새로 추가된 이미지 삭제
+           //새로 추가된 이미지 삭제
             setSelectedFiles((prevFiles) => 
                 prevFiles.filter((_, idx) => idx !== index)
             );
@@ -98,14 +95,14 @@ const PostEdit = () => {
         }
     };
 
-    // 저장 버튼 핸들러
+   //저장 버튼 핸들러
     const handleSave = async () => {
         if (!postTitle || !postContent) {
             alert("제목과 내용을 모두 입력해주세요.");
             return;
         }
 
-        // 허용된 파일 확장자 검사
+       //허용된 파일 확장자 검사
         const allowedExtensions = ["png", "jpg", "jpeg", "gif"];
         const invalidFiles = selectedFiles.filter(
             (file) => !allowedExtensions.includes(file.name.split('.').pop().toLowerCase())
@@ -116,7 +113,7 @@ const PostEdit = () => {
             return;
         }
 
-        // FormData 생성 및 전송
+       //FormData 생성 및 전송
         const formData = new FormData();
         
         formData.append("postTitle", postTitle);
@@ -125,11 +122,10 @@ const PostEdit = () => {
         formData.append("placeList", copyList?.join(", "));        
         formData.append("existingImageUrls", JSON.stringify(existingImageUrls));
 
-
-        // 새 파일 추가
+       //새 파일 추가
         selectedFiles.forEach((file) => formData.append("files", file));
 
-        // FormData 디버깅
+       //FormData 디버깅
         for (let [key, value] of formData.entries()) {
             console.log(`${key}:`, value);
         }
@@ -146,8 +142,7 @@ const PostEdit = () => {
 
             alert("글이 수정되었습니다!");
 
-            navigate(`/postdetail/${id}`, { state: { from: location.state?.from } });  // 이전 경로로 이동
-            
+            navigate(`/postdetail/${id}`, { state: { from: location.state?.from } }); //이전 경로로 이동
 
         } catch (error) {
             console.error("Error updating post:", error.response?.data || error.message);
@@ -159,7 +154,7 @@ const PostEdit = () => {
         };
     }
 
-    // 취소 버튼 핸들러
+   //취소 버튼 핸들러
     const handleCancel = () => {
         if (window.confirm("수정을 취소하시겠습니까?")) {
             alert("수정이 취소되었습니다.");
@@ -281,14 +276,61 @@ export default PostEdit;
 # 코드설명
 
 ```JS
-
+const { id } = useParams();
 ```
+1. useParams
 ```JS
-
+useEffect(() => {
+    const fetchPostDetails = async () => {
+        try {
+            const response = await axios.get(`http://${config.IP_ADD}:9090/travel/posts/postDetail/${id}`, {
+                headers: { 
+                    'Authorization': `Bearer ${user.token}`, 
+                    'Accept': '*/*'
+                },
+                    withCredentials: true
+            });
+            const postData = response.data.data[0];
+            setPostTitle(postData.postTitle);
+            setPostContent(postData.postContent);
+            setExistingImageUrls(postData.imageUrls || []);
+            
+            setCopyPlaceList(postData.placeList);
+            setCopyList(postData.placeList)
+            console.log(postData.placeList)
+        } catch (error) {
+            console.error("게시글 정보 불러오기 실패:", error);
+            alert("게시글 정보를 불러오는 중 오류가 발생했습니다.");
+        }
+    };
+    fetchPostDetails();
+}, [id, user.token, setCopyList]);
 ```
+1. async
+2. 'Accept': '*/*'
+3. withCredentials: true
+4. const postData = response.data.data[0];
+5. setExistingImageUrls(postData.imageUrls || []);
 ```JS
-
+const handleDeleteImage = (index, isExisting = false) => {
+    if (isExisting) {
+        setExistingImageUrls((prevUrls) => 
+            prevUrls.filter((_, idx) => idx !== index)
+        );
+    } else {
+        setSelectedFiles((prevFiles) => 
+            prevFiles.filter((_, idx) => idx !== index)
+        );
+        setPreviewUrls((prevUrls) => 
+            prevUrls.filter((_, idx) => idx !== index)
+        );
+    }
+};
 ```
-```JS
-
-```
+1. 어떻게 진행되는건지?
+    1. if문 부분
+    2. else문 부분
+2. index, isExisting = false
+3. prevUrls/prevFiles.filter((_, idx) => idx !== index)
+    - prevUrls일 때 : 
+    - prevFiles일 때 : 
