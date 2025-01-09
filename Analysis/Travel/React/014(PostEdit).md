@@ -279,6 +279,8 @@ export default PostEdit;
 const { id } = useParams();
 ```
 1. useParams
+    - React Router의 훅으로, URL의 동적 매개변수를 가져옴
+    - 예를들어 /postEdit/123 URL에서 id 값 "123"을 추출함
 ```JS
 useEffect(() => {
     const fetchPostDetails = async () => {
@@ -306,11 +308,15 @@ useEffect(() => {
     fetchPostDetails();
 }, [id, user.token, setCopyList]);
 ```
-1. async
-2. 'Accept': '*/*'
-3. withCredentials: true
+1. async : 비동기 함수를 정의할 때 사용합니다. 이를 통해 `await` 키워드를 사용하여 비동기 작업(예: API 호출)의 완료를 기다릴 수 있음음
+2. 'Accept': '*/*' : HTTP 요청 헤더로, 서버가 반환하는 모든 타입의 데이터를 수락하겠다는 의미임
+3. withCredentials: true -> 쿠키나 인증 헤더와 같은 자격 증명을 포함하여 교차 출처 요청을 할 수 있게 함
 4. const postData = response.data.data[0];
+    - 서버 응답에서 첫 번째 데이터 객체를 추출함
+    - 서버가 `{ data: [...] }` 형식으로 응답을 보냄
 5. setExistingImageUrls(postData.imageUrls || []);
+    - 게시글의 이미지 URL들을 상태에 저장함
+    - || []은 imageUrls가 없을경우 빈 배열을 사용하는 폴백(fallback) 처리임
 ```JS
 const handleDeleteImage = (index, isExisting = false) => {
     if (isExisting) {
@@ -328,9 +334,12 @@ const handleDeleteImage = (index, isExisting = false) => {
 };
 ```
 1. 어떻게 진행되는건지?
-    1. if문 부분
-    2. else문 부분
+    1. if문 부분 : isExisting이 true일 때 기존 이미지를 삭제함함
+    2. else문 부분 : isExisting이 false일 때 새로 추가된 이미지를 삭제함
 2. index, isExisting = false
+    1. index: 삭제할 이미지의 인덱스
+    2. isExisting = false: 기본값이 false인 매개변수로, 기존 이미지인지 새로 추가된 이미지인지 구분함
 3. prevUrls/prevFiles.filter((_, idx) => idx !== index)
-    - prevUrls일 때 : 
-    - prevFiles일 때 : 
+    - _ : 사용하지 않는 첫 번째 매개변수(배열의 각 요소)를 표시
+    - idx : 현재 처리 중인 요소의 인덱스
+    - idx !== index : 삭제하려는 인덱스와 다른 모든 요소를 유지
