@@ -8,7 +8,7 @@ import { ListContext } from "../context/ListContext";
 import { UserContext } from "../context/UserContext";
 import { Delete } from "@mui/icons-material";
 import axios from "axios";
-import '../css/Map.css';  // Map.css 파일을 import
+import '../css/Map.css'; //Map.css 파일을 import
 import config from "../Apikey";
 
 const Write = () => {
@@ -16,13 +16,9 @@ const Write = () => {
     const {list} = useContext(ListContext)
     const [postTitle, setPostTitle] = useState("");
     const [postContent, setPostContent] = useState("");
-    const [selectedFiles, setSelectedFiles] = useState([]); // 사용자가 선택한 파일들
-    const [previewUrls, setPreviewUrls] = useState([]); // 미리보기 URL들
+    const [selectedFiles, setSelectedFiles] = useState([]);//사용자가 선택한 파일들
+    const [previewUrls, setPreviewUrls] = useState([]);//미리보기 URL들
     const navigate = useNavigate();
-
-    //상태 변수
-   
-
 
     //파일 추가 핸들러
     const handleAddImages = async (e) => {
@@ -40,13 +36,11 @@ const Write = () => {
         setPreviewUrls((prevUrls) => [...prevUrls, ...newPreviews]);
     };
 
-
     //이미지 삭제 핸들러
     const handleDeleteImage = (index) => {
         setSelectedFiles((prevFiles) => prevFiles.filter((_, idx) => idx !== index));
         setPreviewUrls((prevUrls) => prevUrls.filter((_, idx) => idx !== index));
     };
-
 
     //저장 버튼 핸들러
     const handleSave = async () => {
@@ -63,7 +57,7 @@ const Write = () => {
         );
     
         if (invalidFiles.length > 0) {
-            alert("허용되지 않은 파일 형식이 포함되어 있습니다.");
+            alert("허용되지 않은 파일 형식이 포함되어 있음.");
             return;
         }
     
@@ -91,11 +85,11 @@ const Write = () => {
             });
 
             console.log("Response:", response);
-            alert("글이 저장되었습니다!");
+            alert("글이 저장되었음!");
             navigate("/PostDetail/" + response.data.postId);
         } catch (error) {
             console.error("Error saving post:", error.response || error.message);
-            alert("저장 중 오류가 발생했습니다.");
+            alert("저장 중 오류가 발생했음.");
             if (error.response) {
                 console.log("Response Data:", error.response.data);
                 console.log("Response Status:", error.response.status);
@@ -103,12 +97,12 @@ const Write = () => {
         }
     };
 
-    // 취소 버튼 핸들러
+   //취소 버튼 핸들러
     const handleCancel = () => {
         setPostTitle("");
         setPostContent("");
         if (window.confirm("글 작성을 취소하시겠습니까?")) {
-            alert("글 작성이 취소되었습니다.");
+            alert("글 작성이 취소되었음.");
             navigate("/post");
         }
     };
@@ -221,14 +215,16 @@ export default Write;
 # 코드설명
 
 ```JS
-
+const files = Array.from(e.target.files);
 ```
-```JS
-
-```
-```JS
-
-```
-```JS
-
-```
+1. Array.from()
+    - 유사 배열 객체(array-like object)나 이터러블 객체를 실제 배열로 변환하는 메서드임
+    - e.target.files가 반환하는 FileList 객체는 유사 배열 객체이기 때문에, 배열 메서드를 사용하기 위해서는 실제 배열로 변환이 필요함
+    - 변환 후에는 map, filter 등의 배열 메서드를 자유롭게 사용할 수 있음
+2. e.target.files
+    - input[type="file"] 요소에서 선택된 파일들의 정보를 담고 있는 FileList 객체를 반환
+    - 주요 특징 :
+        - 읽기 전용 객체임임
+        - length 속성을 통해 선택된 파일의 개수를 알 수 있음
+        - 인덱스를 통해 개별 File 객체에 접근할 수 있음
+        - File 객체는 name, size, type 등의 파일 정보를 포함함
