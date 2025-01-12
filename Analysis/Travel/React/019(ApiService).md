@@ -32,22 +32,10 @@ export async function call(api,method,request,user){
         // window.location.href="/";
         throw error.response ? error.response.data : error.message;
     }
-    
 
 }//call
 ```
 
 # 코드설명
 
-```JS
-
-```
-```JS
-
-```
-```JS
-
-```
-```JS
-
-```
+\-
