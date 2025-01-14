@@ -3,10 +3,10 @@
 ```JS
 import React, { createContext, useState } from "react";
 
-// ImageContext 생성
+//ImageContext 생성
 export const ImageContext = createContext();
 
-// ImageProvider 작성
+//ImageProvider 작성
 export const ImageProvider = ({ children }) => {
   const [copyImage, setCopyImage] = useState([]);
 
@@ -21,10 +21,10 @@ export const ImageProvider = ({ children }) => {
 ```JS
 import React, { createContext, useState } from "react";
 
-// PlaceContext 생성
+//PlaceContext 생성
 export const PlaceContext = createContext();
 
-// PlaceProvider 작성
+//PlaceProvider 작성
 export const PlaceProvider = ({ children }) => {
   const [placeList, setPlaceList] = useState([]);
 
@@ -38,30 +38,30 @@ export const PlaceProvider = ({ children }) => {
 
 ```JS
 import React, { createContext, useContext, useState } from "react";
-import axios from "axios"; // axios 임포트
+import axios from "axios";//axios 임포트
 import { UserContext } from "./UserContext";
 
-// PostContext 생성
+//PostContext 생성
 export const PostContext = createContext();
 
-// PostProvider 작성
+//PostProvider 작성
 export const PostProvider = ({ children }) => {
   const [postList, setPostList] = useState([]);
   const {user} = useContext(UserContext);
 
-// 게시글 삭제 함수
+//게시글 삭제 함수
 const deletePost = async (id) => {
   console.log(user)
   try {
-    // axios를 사용하여 백엔드에 DELETE 요청을 보냄
-    const response = await axios.delete(`http://192.168.3.25:9090/api/postDelete/${id}`, { 
+   //axios를 사용하여 백엔드에 DELETE 요청을 보냄
+    const response = await axios.delete(`{백엔드 서버의 API 엔드포인트주소}/api/postDelete/${id}`, { 
       headers: { 
         'Authorization': `Bearer ${user.token}`
       }
     });
     
     if (response.status === 200) {
-      // 성공적으로 삭제된 경우, 로컬 postList에서 삭제된 게시물 제거
+     //성공적으로 삭제된 경우, 로컬 postList에서 삭제된 게시물 제거
       setPostList((prevPostList) => prevPostList.filter((post) => post.postId !== id));
     } else {
       throw new Error("삭제 실패");
@@ -100,16 +100,16 @@ export const UserProvider = ({ children }) => {
     userPassword: null,
     userProfileImage: null,
     userPhoneNumber: null,
-  }); // 현재 로그인한 사용자 정보
-  const [users, setUsers] = useState([]); // 모든 사용자 데이터 저장
+  });//현재 로그인한 사용자 정보
+  const [users, setUsers] = useState([]);//모든 사용자 데이터 저장
 
   const dispatch = async (userData) => {
     try {
       if (!userData.userProfileImage) {
-        userData.userProfileImage = require("../../assets/profile.jpg"); // 기본 이미지 경로
+        userData.userProfileImage = require("../../assets/profile.jpg");//기본 이미지 경로
       }
-      setUser(userData); // 상태 업데이트
-      await AsyncStorage.setItem('user', JSON.stringify(userData)); // 사용자 정보를 AsyncStorage에 저장
+      setUser(userData);//상태 업데이트
+      await AsyncStorage.setItem('user', JSON.stringify(userData));//사용자 정보를 AsyncStorage에 저장
     } catch (error) {
       console.error('AsyncStorage 저장 실패:', error);
     }
@@ -123,7 +123,7 @@ export const UserProvider = ({ children }) => {
     const existingUser = users.find((u) => u.userId === userId && u.userPassword === password);
     if (existingUser) {
       setUser(existingUser);
-      AsyncStorage.setItem('user', JSON.stringify(existingUser)); // 로그인 후 AsyncStorage에 저장
+      AsyncStorage.setItem('user', JSON.stringify(existingUser));//로그인 후 AsyncStorage에 저장
       return true;
     }
     return false;
@@ -137,14 +137,14 @@ export const UserProvider = ({ children }) => {
       userPassword: null,
       userProfileImage: null,
       userPhoneNumber: null,
-    }); // 사용자 상태 초기화
-    AsyncStorage.removeItem('user'); // AsyncStorage에서 사용자 정보 삭제
+    });//사용자 상태 초기화
+    AsyncStorage.removeItem('user');//AsyncStorage에서 사용자 정보 삭제
   };
 
   useEffect(() => {
     const loadUserData = async () => {
       try {
-        // 앱이 켜질 때 AsyncStorage의 사용자 데이터를 초기화
+       //앱이 켜질 때 AsyncStorage의 사용자 데이터를 초기화
         await AsyncStorage.removeItem('user');
         setUser({
           userId: null,
@@ -159,15 +159,15 @@ export const UserProvider = ({ children }) => {
       }
     };
 
-    loadUserData(); // 컴포넌트가 마운트될 때 사용자 정보를 초기화
+    loadUserData();//컴포넌트가 마운트될 때 사용자 정보를 초기화
 
-    // React Native에서 Promise rejection을 잡는 방법
+   //React Native에서 Promise rejection을 잡는 방법
     window.onunhandledrejection = (event) => {
       console.warn('Unhandled promise rejection:', event.reason);
     };
 
     return () => {
-      window.onunhandledrejection = null; // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+      window.onunhandledrejection = null;//컴포넌트가 언마운트될 때 이벤트 리스너 제거
     };
   }, []);
 
@@ -183,13 +183,31 @@ export const UserProvider = ({ children }) => {
 # 코드설명
 
 ```JS
-
+export const ImageProvider = ({ children }) => { ... };
 ```
+1. children의 역할할
 
 ```JS
-
+<ImageContext.Provider value={{ copyImage, setCopyImage }}>
 ```
+1. .Provider의 역할
+2. value={{...}}의 역할할
 
 ```JS
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 ```
+1. AsyncStorage
+2. @react-native-async-storage/async-storage
+```JS
+await AsyncStorage.setItem('user', JSON.stringify(userData));
+```
+1. JSON.stringify(userData)
+2. userData은 기본적인 설정값인지?
+```JS
+const existingUser = users.find((u) => u.userId === userId && u.userPassword === password);
+```
+1. u
+```JS
+window.onunhandledrejection = null;
+```
+1. window.onunhandledrejection = null
