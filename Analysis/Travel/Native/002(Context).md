@@ -367,6 +367,6 @@ export const UserProvider = ({ children }) => {
   1. window.onunhandledrejection 관련 코드를 제거하고 React Native의 에러 처리 방식으로 변경함
   2. RNErrorBoundary를 사용한 에러 구독 방식 도입함
   3. DEV 플래그를 사용하여 개발 모드에서만 에러 처리 적용함
-  4. 컴포넌트 언마운트시 에러 구독 해제 로직 추가됨됨
+  4. 컴포넌트 언마운트시 에러 구독 해제 로직 추가됨
   5. 이 코드는 React Native의 방식에 더 적합하게 에러 처리를 구현함
   6. 개발 모드에서만 에러 처리를 하고, 컴포넌트가 언마운트될 때 적절히 정리됨
