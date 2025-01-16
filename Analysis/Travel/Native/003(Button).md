@@ -88,4 +88,4 @@ Button.defaultProps = {
 1. Button.defaultProps
   - 컴포넌트의 기본 props 값을 설정하는 속성임
   - 여기서는 isFilled의 기본값을 true로 설정하고 있음
-  - props로 isFilled 값을 따로 전달하지 않으면 자동으로 true가 적용됨됨
+  - props로 isFilled 값을 따로 전달하지 않으면 자동으로 true가 적용됨
