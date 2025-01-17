@@ -112,6 +112,9 @@ export default Input;
 const input = forwardRef((props,ref))=>{...};
 ```
 1. forwardRef
+    - forwardRef는 React 컴포넌트에서 ref를 전달하기 위한 특별한 함수임
+    - 일반적으로 부모 컴포넌트에서 자식 컴포넌트로 ref를 전달할 수 없지만, forwardRef를 사용하면 가능함
+    - 이 코드에서는 Input 컴포넌트가 받은 ref를 내부의 StyledTextInput 컴포넌트로 전달하여, 부모 컴포넌트에서 직접 TextInput에 접근할 수 있게 함
 ```JS
 Input.defaultProps = {
     onBlur: () => { },
@@ -119,7 +122,28 @@ Input.defaultProps = {
     onSubmitEditing: () => { },
 };
 ```
-
+1. defaultProps : 컴포넌트의 기본 props 값을 설정하는 방법임
+    1. 안전성 확보
+        - props가 전달되지 않았을 때 발생할 수 있는 에러를 방지함
+        - undefined나 null로 인한 런타임 에러를 예방할 수 있음
+    2. 컴포넌트 재사용성 향상
+        - 필수적이지 않은 props에 대해 기본값을 제공함으로써 컴포넌트를 더 유연하게 사용할 수 있음
+        - 최소한의 props만으로도 컴포넌트를 사용할 수 있게 함
+    3. 코드 가독성과 유지보수성 향상
+        - 컴포넌트가 사용하는 props의 기본값을 한 눈에 파악할 수 있음
+        - 다른 개발자가 컴포넌트를 사용할 때 참고할 수 있는 문서 역할을 함
+    4. 개발 효율성 증가
+        - 매번 모든 props를 전달할 필요 없이, 필요한 props만 전달하면 됨
+        - 반복적인 코드 작성을 줄일 수 있음
+    5. 이렇게 defaultProps를 사용함으로써 더 안정적이고 유연한 컴포넌트를 만들 수 있음
+2. () => { }의 의미
+    - 빈 함수(empty function)를 의미임
+    - 이 코드에서는 onBlur, onChangeText, onSubmitEditing에 대해 기본값으로 빈 함수를 설정했음
+    - 이렇게 하면 사용자가 이 props를 전달하지 않아도 에러가 발생하지 않음
 ```JS
 Input.propTypes = {...}
 ```
+1. Input.propTypes사용하는 이유
+    - propTypes는 컴포넌트가 받는 props의 타입을 검증하는 도구임
+    - 개발 단계에서 잘못된 타입의 props가 전달되는 것을 방지할 수 있음
+    - 코드의 안정성과 가독성을 높여줌
