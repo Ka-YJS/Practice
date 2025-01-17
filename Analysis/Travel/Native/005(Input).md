@@ -59,7 +59,7 @@ const Input = forwardRef(
             <Container>
                 <Label isFocused={isFocused}>{label}</Label>
                 <StyledTextInput
-                    ref={ref} //login에서 정의된 useRef를 전달
+                    ref={ref}//login에서 정의된 useRef를 전달
                     isFocused={isFocused}//해당 input이 포커스가 된 상태냐
                     value={value}//호출한쪽에서 넘어온 값
                     onChangeText={onChangeText}//호출한쪽에서 넘어온 함수 
@@ -74,9 +74,9 @@ const Input = forwardRef(
                     returnKeyType={returnKeyType}//키보드 완료버튼 (확인인지 넥스트인지)
                     maxLength={maxLength}//글씨 몇글자까지 
                     autoCapitalize="none"//첫글짜 대문자 안나오게
-                    autoCorrect={false} //단어 추천기능 안뜨게
-                    textContentType="none" // iOS에서만 사용 옵션, 옵션따라 뜨는 키보드 달라짐 
-                    underlineColorAndroid="transparent" // 컴포넌트의 밑줄 색상 설정할 때 사용 (안드로이드)
+                    autoCorrect={false}//단어 추천기능 안뜨게
+                    textContentType="none"//iOS에서만 사용 옵션, 옵션따라 뜨는 키보드 달라짐 
+                    underlineColorAndroid="transparent"//컴포넌트의 밑줄 색상 설정할 때 사용 (안드로이드)
                     editable={!disabled}//해당 컴포넌트를 수정할수 잇냐(true) 없냐(false)
                 />
             </Container>
@@ -103,19 +103,23 @@ Input.propTypes = {
     editable: PropTypes.bool,
 }
 
-export default Input
+export default Input;
 ```
 
 # 코드설명
 
 ```JS
-
+const input = forwardRef((props,ref))=>{...};
+```
+1. forwardRef
+```JS
+Input.defaultProps = {
+    onBlur: () => { },
+    onChangeText: () => { },
+    onSubmitEditing: () => { },
+};
 ```
 
 ```JS
-
-```
-
-```JS
-
+Input.propTypes = {...}
 ```
