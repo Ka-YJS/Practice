@@ -14,14 +14,4 @@ export {Login,Signup,Main,Map,MyPage,Post};
 
 # 코드설명
 
-```JS
-
-```
-
-```JS
-
-```
-
-```JS
-
-```
+\-

@@ -26,7 +26,6 @@ const EditPost = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const post = route.params;
-  // console.log(post)
   const [placeList, setPlaceList] = useState(post.placeList);
   const { user } = useContext(UserContext);
   const mapRef = useRef(null);
@@ -48,11 +47,10 @@ const EditPost = () => {
   const [selectedImages, setSelectedImages] = useState(
     (post?.imageUrls || []).map((uri) => ({
       id: UUID.v4(),
-      uri: `http://192.168.3.25:9090${uri}`, // 앞에 base URL을 추가
     })) || []
   );
 
-  const GOOGLE_API_KEY = "AIzaSyDdfuKZuF0IpsUtjlx_Syh-gmJhCE70t-8";
+  const GOOGLE_API_KEY = "GOOGLE_API_KEY";
 
   useEffect(() => {
     if (post?.placeList) {
@@ -66,9 +64,7 @@ const EditPost = () => {
 
   useEffect(() => {
     if (post?.placeList && post.placeList.length > 0) {
-      // 처음 렌더링될 때 장소 목록을 이미 설정된 placeList에서 설정
       const firstPlace = post.placeList[0];
-      setPlaceName(firstPlace); // 첫 번째 장소 이름으로 초기화
     }
   }, [post]);
 
@@ -224,18 +220,15 @@ const EditPost = () => {
       formData.append("postContent", postContent);
       formData.append("userNickName", user.userNickName);
 
-      // 장소 목록을 문자열로 변환
       const placeListString =
         placeList.length > 0 ? placeList.map((place) => place.name).join(", ") : "";
       formData.append("placeList", placeListString);
 
-      // 기존 이미지 URL들을 JSON 문자열로 변환
       const existingImageUrls = selectedImages
         .filter(image => image.uri.startsWith("/uploads/"))
         .map(image => image.uri);
       formData.append("existingImageUrls", JSON.stringify(existingImageUrls));
 
-      // 새로 추가된 이미지들만 files로 추가
       const newImages = selectedImages.filter(image => !image.uri.startsWith("/uploads/"));
       newImages.forEach((image, index) => {
         const file = {
@@ -479,7 +472,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight: 10,
     maxWidth: 300,
-    fontFamily: 'GCB_Bold', // 추가
   },
   titleInput: {
     flex: 1,
@@ -498,7 +490,6 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: "#fff",
-    fontFamily: 'GCB_Bold', // 추가
   },
   removeButton: {
     backgroundColor: "#FF6347",
@@ -509,7 +500,6 @@ const styles = StyleSheet.create({
   },
   removeButtonText: {
     color: "#fff",
-    fontFamily: 'GCB_Bold', // 추가
   },
 
   listItem: {
@@ -524,13 +514,11 @@ const styles = StyleSheet.create({
   },
   selectedText: {
     color: 'green',
-    fontFamily: 'GCB_Bold', // 추가
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     padding: 10,
-    marginBottom: 15,  // 버튼들 사이 간격 조정
   },
   sectionDivider: {
     borderTopWidth: 1,
@@ -543,24 +531,20 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#f0f0f0',
     textAlign: 'center',
-    fontFamily: 'GCB_Bold', // 추가
   },
   writeContainer: {
     padding: 10,
     alignItems: 'center',
-    fontFamily: 'GCB_Bold', // 추가
   },
   userText: {
     fontSize: 16,
     marginBottom: 10,
     alignSelf: 'flex-start',
-    fontFamily: 'GCB_Bold', // 추가
   },
   listText: {
     fontSize: 16,
     marginBottom: 10,
     alignSelf: 'flex-start',
-    fontFamily: 'GCB_Bold', // 추가
   },
   textArea: {
     borderWidth: 1,
@@ -573,7 +557,6 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 20,
     textAlign: "auto",
-    fontFamily: 'GCB_Bold', // 추가
   },
   saveButtonContainer: {
     width: '100%',
@@ -613,15 +596,12 @@ const styles = StyleSheet.create({
   },
   deleteButtonText: {
     color: "#fff",
-    fontFamily: 'GCB_Bold', // 추가
   },
   imageListContent: {
     flexDirection: "row",
-    justifyContent: "flex-start", // 왼쪽 정렬
     alignItems: "center",
   },
   imagesContainer: {
-    width: "100%", // 목록이 너비를 차지하도록
     marginTop: 10,
   },
 });
@@ -632,13 +612,40 @@ export default EditPost;
 # 코드설명
 
 ```JS
-
+import {
+  StyleSheet,     //스타일링을 위한 컴포넌트
+  View,           //컨테이너 역할의 기본 레이아웃 컴포넌트
+  Text,           //텍스트 표시 컴포넌트
+  TextInput,      //사용자 입력을 받는 컴포넌트
+  FlatList,       //리스트 데이터를 효율적으로 표시하는 컴포넌트
+  TouchableOpacity, //터치 이벤트를 처리하는 버튼 컴포넌트
+  KeyboardAvoidingView, //키보드가 UI를 가리지 않도록 조정하는 컴포넌트
+  Platform,       //iOS/Android 플랫폼 구분을 위한 유틸리티
+  Alert,          //알림창을 표시하는 컴포넌트
+  Image,          //이미지를 표시하는 컴포넌트
+} from "react-native";
 ```
-
+1. 각 기능설명 -> 화면에
 ```JS
-
+import * as ImagePicker from "expo-image-picker";
+import MapView, { Marker } from "react-native-maps";
+import { useNavigation, useRoute } from "@react-navigation/native";
 ```
-
+1. ImagePicker : 디바이스의 갤러리에서 이미지를 선택할 수 있게 해주는 Expo 라이브러리
+2. react-native-maps : 지도 기능을 제공하는 라이브러리
+  - MapView : 지도를 표시하는 메인 컴포넌트
+  - { Marker } : 지도 위에 위치 마커를 표시하는 컴포넌트
+3. useRoute : 현재 화면의 라우트 정보와 파라미터에 접근하기 위한 hook
 ```JS
-
+const [selectedImages, setSelectedImages] = useState(
+  (post?.imageUrls || []).map((uri) => ({
+    id: UUID.v4(),
+  })) || []
+);
 ```
+1. id: UUID.v4() : 각 이미지에 고유한 ID(식별자)를 부여
+  - v4는 랜덤 UUID를 생성하는 버전
+  - 형식: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+  - 이미지 관리(삭제, 수정 등)를 위해 사용됨
+2. post?.imageUrls : 게시글 수정 시 기존 이미지들을 로드
+3. 옵셔널 체이닝(?.)을 사용해 post가 undefined일 경우 에러 방지
