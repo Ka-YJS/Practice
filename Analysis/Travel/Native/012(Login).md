@@ -92,12 +92,12 @@ const Login = ({ navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isFindId, setIsFindId] = useState(false);
   
-  // 아이디 찾기 상태
+  //아이디 찾기 상태
   const [findIdName, setFindIdName] = useState('');
   const [findIdPhone, setFindIdPhone] = useState('');
   const [findIdError, setFindIdError] = useState('');
 
-  // 비밀번호 찾기 상태
+  //비밀번호 찾기 상태
   const [findPasswordEmail, setFindPasswordEmail] = useState('');
   const [findPasswordName, setFindPasswordName] = useState('');
   const [findPasswordPhone, setFindPasswordPhone] = useState('');
@@ -105,19 +105,19 @@ const Login = ({ navigation }) => {
   const [findPasswordNameError, setFindPasswordNameError] = useState('');
   const [findPasswordPhoneError, setFindPasswordPhoneError] = useState('');
   
-  // 비밀번호 찾기 단계
-  const [findPasswordStage, setFindPasswordStage] = useState('initial'); // 'initial', 'emailRequested', 'emailVerified'
+  //비밀번호 찾기 단계
+  const [findPasswordStage, setFindPasswordStage] = useState('initial'); //'initial', 'emailRequested', 'emailVerified'
   const [authCode, setAuthCode] = useState('');
   const [authCodeError, setAuthCodeError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  // 새 비밀번호 상태
+  //새 비밀번호 상태
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [newPasswordError, setNewPasswordError] = useState('');
   const [confirmNewPasswordError, setConfirmNewPasswordError] = useState('');
 
-  // 로그인 아이디 핸들러
+  //로그인 아이디 핸들러
   const _handleLoginIdChange = loginId => {
     const changedLoginId = removeWhitespace(loginId);
     setLoginId(changedLoginId);
@@ -126,7 +126,7 @@ const Login = ({ navigation }) => {
     );
   };
 
-  // 로그인 패스워드 핸들러
+  //로그인 패스워드 핸들러
   const _handlePasswordChange = loginPassword => {
     setLoginPassword(removeWhitespace(loginPassword));
   };
@@ -145,7 +145,7 @@ const Login = ({ navigation }) => {
 
     try {
       const response = await axios.post(
-        'http://192.168.3.25:9090/travel/login', // 백엔드 엔드포인트
+        '백엔드 엔드포인트/travel/login', //백엔드 엔드포인트
         userProfile,
         {
           headers: { 'Content-Type': 'application/json' }
@@ -153,18 +153,18 @@ const Login = ({ navigation }) => {
       );
 
       if (response.data) {
-        // 서버에서 받은 userProfileImage 경로를 절대 URL로 변환
+        //서버에서 받은 userProfileImage 경로를 절대 URL로 변환
         const updatedUserData = {
           ...response.data,
-          userProfileImage: `http://192.168.3.25:9090${response.data.userProfileImage}`
+          userProfileImage: `백엔드 엔드포인트${response.data.userProfileImage}`
         };
 
-        // 변환된 userProfileImage를 포함한 데이터로 UserContext 업데이트
-        dispatch(updatedUserData); // UserContext에 사용자 정보 저장
+        //변환된 userProfileImage를 포함한 데이터로 UserContext 업데이트
+        dispatch(updatedUserData); //UserContext에 사용자 정보 저장
 
-        console.log(updatedUserData); // 확인용
+        console.log(updatedUserData); //확인용
         alert(`로그인 성공! 환영합니다, ${response.data.userNickName} 님!`);
-        // 토큰 저장 예시
+        //토큰 저장 예시
         await AsyncStorage.setItem('userToken', response.data.token);
       } else {
         setErrorMessage('아이디 또는 비밀번호가 올바르지 않습니다.');
@@ -175,7 +175,7 @@ const Login = ({ navigation }) => {
     }
   };
 
-  // 아이디 찾기
+  //아이디 찾기
   const handleFindId = async () => {
     
       setFindIdError(null);
@@ -185,7 +185,7 @@ const Login = ({ navigation }) => {
         userPhoneNumber: findIdPhone,
       });
     
-    // 유효성 검사
+    //유효성 검사
     if (!findIdName) {
       setFindIdError('이름을 입력해주세요.');
       return;
@@ -196,7 +196,7 @@ const Login = ({ navigation }) => {
     }
 
     try {
-      const response = await axios.post('http://192.168.3.25:9090/travel/userFindId', { 
+      const response = await axios.post('백엔드 엔드포인트/travel/userFindId', { 
         userName: findIdName, 
         userPhoneNumber: findIdPhone,
       });
@@ -206,22 +206,22 @@ const Login = ({ navigation }) => {
         setIsModalVisible(false);
       }
     } catch (error) {
-      console.log("Error caught:", error); // 디버깅
+      console.log("Error caught:", error); //디버깅
       if (error.response) {
-        console.log("Error response data:", error.response.data); // 서버 응답 확인
+        console.log("Error response data:", error.response.data); //서버 응답 확인
         setFindIdError(error.response.data.error || "알 수 없는 오류가 발생했습니다.");
       } else if (error.request) {
-        console.log("Error request:", error.request); // 요청 실패 확인
+        console.log("Error request:", error.request); //요청 실패 확인
         setFindIdError("서버와 연결할 수 없습니다. 네트워크를 확인하세요.");
       } else {
-        console.log("Axios error message:", error.message); // Axios 자체 문제
+        console.log("Axios error message:", error.message); //Axios 자체 문제
         setFindIdError(`요청 중 문제가 발생했습니다: ${error.message}`);
       }
     }
     
   };
 
-  /// 인증 코드 발송
+  ///인증 코드 발송
   const handleSendPasswordResetAuthCode = async () => {
     let hasError = false;
 
@@ -260,7 +260,7 @@ const Login = ({ navigation }) => {
         console.log("Sending data to /findPassword:", requestData);
 
         const userVerifyResponse = await axios.post(
-          'http://192.168.3.25:9090/travel/userFindPassword',
+          '백엔드 엔드포인트/travel/userFindPassword',
           requestData,
           {
               headers: {
@@ -273,7 +273,7 @@ const Login = ({ navigation }) => {
 
         if (userVerifyResponse.data) {
             const authCodeResponse = await axios.get(
-                `http://192.168.3.25:9090/api/email/auth?address=${findPasswordEmail}`
+                `백엔드 엔드포인트/api/email/auth?address=${findPasswordEmail}`
             );
 
             if (authCodeResponse.data.success) {
@@ -293,7 +293,7 @@ const Login = ({ navigation }) => {
     }
 };
 
-  // 인증 코드 확인
+  //인증 코드 확인
   const handleVerifyAuthCode = async () => {
     if (!authCode) {
       setAuthCodeError("인증 코드를 입력해주세요.");
@@ -302,7 +302,7 @@ const Login = ({ navigation }) => {
 
     try {
       setIsLoading(true);
-      const response = await axios.post(`http://192.168.3.25:9090/api/email/auth?address=${findPasswordEmail}&authCode=${authCode}`);
+      const response = await axios.post(`백엔드 엔드포인트/api/email/auth?address=${findPasswordEmail}&authCode=${authCode}`);
 
       if (response.data.success) {
         alert("이메일 인증이 완료되었습니다.");
@@ -319,7 +319,7 @@ const Login = ({ navigation }) => {
   };
 
 
-  // 새 비밀번호 변경
+  //새 비밀번호 변경
   const handleResetPassword = async () => {
     let hasError = false;
 
@@ -340,7 +340,7 @@ const Login = ({ navigation }) => {
     if (hasError) return;
 
     try {
-      const response = await axios.post('http://192.168.3.25:9090/travel/userResetPassword', {
+      const response = await axios.post('백엔드 엔드포인트/travel/userResetPassword', {
         userId: findPasswordEmail,
         userPassword: newPassword
       });
@@ -411,7 +411,7 @@ const Login = ({ navigation }) => {
               </CloseButton>
               
               {isFindId ? (
-                // 아이디 찾기
+                //아이디 찾기
                 <>
                   <ModalTitle>아이디 찾기</ModalTitle>
                   <Input 
@@ -428,7 +428,7 @@ const Login = ({ navigation }) => {
                   <Button title="아이디 찾기" onPress={handleFindId} />
                 </>
               ) : (
-                // 비밀번호 찾기
+                //비밀번호 찾기
                 <>
                   <ModalTitle>비밀번호 찾기</ModalTitle>
                   
@@ -520,7 +520,7 @@ const Login = ({ navigation }) => {
                 title={isFindId ? '비밀번호 찾기' : '아이디 찾기'} 
                 onPress={() => {
                   setIsFindId(!isFindId);
-                  // 상태 초기화
+                  //상태 초기화
                   setFindPasswordStage('initial');
                   setFindPasswordEmailError('');
                   setFindPasswordNameError('');
@@ -544,13 +544,53 @@ export default Login;
 # 코드설명
 
 ```JS
-
+const _handleLoginButtonPress = async () => {
+  if (!validateEmail(loginId) || !loginPassword) {
+    setErrorMessage('아이디와 비밀번호를 확인하세요');
+    return;
+  }
+}
 ```
-
+1. async의 역할
+  - async 키워드는 해당 함수가 비동기 작업을 포함하고 있음을 선언함
+  - 로그인 과정에서는 서버와의 통신이 필요한데, 이는 시간이 걸리는 작업임
+  - async 함수 내에서 await 키워드를 사용하여 비동기 작업(서버 응답 대기)이 완료될 때까지 기다릴 수 있음
+  - 이를 통해 서버 응답을 기다리는 동안 앱이 멈추지 않고 다른 작업을 수행할 수 있음
 ```JS
-
+const updatedUserData = {
+  ...response.data,
+  userProfileImage: `백엔드 엔드포인트${response.data.userProfileImage}`
+};
 ```
-
+1. ...response.data
+  - 이것은 스프레드 연산자(spread operator)를 사용한 것임
+  - response.data 객체의 모든 속성을 새로운 객체에 복사함
+  - 모든 속성을 새 객체에 복사하고, 그 후에 새 값으로 덮어쓰게 됨
 ```JS
-
+const userVerifyResponse = await axios.post(
+  '백엔드 엔드포인트/travel/userFindPassword',
+  requestData,
+  {headers: {
+          'Content-Type': 'application/json',}
+  ,}
+);
 ```
+1. headers의 역할
+  - HTTP 요청에서 중요한 메타데이터를 전달하는 역할을 함
+  - 이 코드에서는 3가지의 역할을 함
+    1. 데이터 형식 명시
+      - 서버에게 전송하는 데이터가 JSON 형식임을 알림
+      - 이를 통해 서버는 받은 데이터를 어떻게 파싱(해석)해야 할지 알 수 있음
+    2. 올바른 데이터 처리 보장 : JavaScript 객체를 전송할 때, application/json 헤더는 이 데이터가 자동으로 JSON 문자열로 변환되어 전송되도록 함
+    3. 서버-클라이언트 통신 규약
+      - 이는 일종의 약속으로, 서버 측에서도 이 헤더를 보고 JSON 형식의 데이터가 전송되었음을 인지하고 적절히 처리할 수 있음
+      - 만약 이 헤더가 없다면, 서버는 데이터를 어떤 형식으로 해석해야 할지 혼란스러울 수 있음
+      - 이러한 헤더 설정은 HTTP 통신에서 데이터의 안전하고 정확한 전송을 보장하는 중요한 역할을 함함
+```JS
+if (hasError) return;
+```
+1. if (hasError) return;의 의미
+  - 이는 early return 패턴을 사용한 에러 처리 방식임
+  - hasError가 true인 경우 함수의 실행을 즉시 중단하며, 이전 코드에서 유효성 검사를 수행하면서 에러가 발견되면 hasError를 true로 설정함
+  - 이를 통해 에러가 있을 경우 불필요한 서버 요청을 방지하고, 코드의 실행을 조기에 중단할 수 있음
+  - 예를 들어 이메일 형식이 잘못되었거나, 필수 필드가 비어있는 경우 서버로 요청을 보내지 않고 함수를 종료함
