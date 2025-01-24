@@ -62,7 +62,7 @@ const MyPage = () => {
      //서버에 새 닉네임 업데이트 요청
       const newUserNickname = { userNickName: newNickname };
       const response = await axios.patch(
-        `http://192.168.3.25:9090/travel/userNickNameEdit/${user.id}`,
+        `http://백엔드엔드포인트/userNickNameEdit/${user.id}`,
         newUserNickname,
         {
           headers: {
@@ -106,7 +106,7 @@ const MyPage = () => {
     try {
      //서버에 비밀번호 변경 요청
       const response = await axios.patch(
-        `http://192.168.3.25:9090/travel/userPasswordEdit/${user.id}`,
+        `http://백엔드엔드포인트/userPasswordEdit/${user.id}`,
         {
           userPassword: currentPassword,//현재 비밀번호
           newPassword: newPassword,    //새 비밀번호
@@ -143,7 +143,7 @@ const MyPage = () => {
 
      //서버에 계정 삭제 요청
       const response = await axios.delete(
-        `http://192.168.3.25:9090/travel/withdraw/${user.id}`,
+        `http://백엔드엔드포인트/withdraw/${user.id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -213,7 +213,7 @@ const MyPage = () => {
       try {
        //서버에 프로필 이미지 업로드 요청
         const response = await axios.patch(
-          `http://192.168.3.25:9090/travel/userProfileImageEdit/${user.id}`,
+          `http://백엔드엔드포인트/userProfileImageEdit/${user.id}`,
           formData,
           {
             headers: {
@@ -226,7 +226,7 @@ const MyPage = () => {
         if (response.status === 200) {
           const updatedUser = {
             ...user,
-            userProfileImage: `http://192.168.3.25:9090${response.data.userProfileImage}`
+            userProfileImage: `http://백엔드엔드포인트${response.data.userProfileImage}`
           };
           dispatch(updatedUser);
           AsyncStorage.setItem('user', JSON.stringify(updatedUser));
@@ -245,7 +245,7 @@ const MyPage = () => {
 
     try {
       const response = await axios.patch(
-        `http://192.168.3.25:9090/travel/userProfileImageDelete/${user.id}`, {},
+        `http://백엔드엔드포인트/userProfileImageDelete/${user.id}`, {},
         {
           headers: {
             "Authorization": `Bearer ${user.token}`,
@@ -286,7 +286,7 @@ const MyPage = () => {
         <View style={styles.profileImageContainer}>
           <Image
             source={
-              user.userProfileImage && user.userProfileImage !== 'http://192.168.3.25:9090null'
+              user.userProfileImage && user.userProfileImage !== 'http://백엔드엔드포인트null'
                 ? { uri: user.userProfileImage }
                 : require("../../assets/profile.jpg")
             }
@@ -670,13 +670,31 @@ export default MyPage;
 # 코드설명
 
 ```JS
-
+const handlePickImage = async () => {
+  const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
+  if (cameraPermission.status !== "granted") {
+    alert("카메라 접근 권한이 필요합니다.");
+    return;
+  }
+  const mediaLibraryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (mediaLibraryPermission.status !== "granted") {
+    alert("미디어 라이브러리 접근 권한이 필요합니다.");
+    return;
+  }}
 ```
-
+1. requestMediaLibraryPermissionsAsync
 ```JS
-
+if (response.status === 200 && response.data === true) {
+  alert("계정이 성공적으로 삭제되었습니다.");
+  await AsyncStorage.clear();//로컬 저장소 초기화
+  logoutUser();//로그아웃 처리
+  navigation.dispatch(
+    CommonActions.reset({
+      index: 0,
+      routes: [{ name: "Login" }],
+    })
+  );
+}
 ```
-
-```JS
-
-```
+1. navigation.dispatch
+2. CommonActions.reset
