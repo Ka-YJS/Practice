@@ -683,6 +683,12 @@ const handlePickImage = async () => {
   }}
 ```
 1. requestMediaLibraryPermissionsAsync
+  - Expo의 ImagePicker API에서 제공하는 메서드로, 앱이 사용자의 미디어 라이브러리(사진/갤러리)에 접근할 수 있는 권한을 요청함
+  - 비동기 함수이며, 다음과 같은 권한 상태를 반환함
+    1. granted : 권한이 허용됨
+    2. denied : 권한이 거부됨
+    3. undetermined : 아직 권한 요청이 이루어지지 않음
+  - iOS나 Android와 같은 모바일 플랫폼에서는 개인정보 보호를 위해 이러한 권한 요청이 필수적임
 ```JS
 if (response.status === 200 && response.data === true) {
   alert("계정이 성공적으로 삭제되었습니다.");
@@ -696,5 +702,10 @@ if (response.status === 200 && response.data === true) {
   );
 }
 ```
-1. navigation.dispatch
+1. navigation.dispatch : React Navigation의 고급 내비게이션 제어 메커니즘임
 2. CommonActions.reset
+  - CommonActions.reset()은 내비게이션 스택을 완전히 초기화하고 새로운 상태로 재설정함
+  - index: 0 -> 새로운 내비게이션 스택의 첫 번째 화면을 활성 화면으로 설정
+  - routes : 새로운 내비게이션 스택에 포함될 화면들의 배열
+  - [{ name: "Login" }] : Login 화면만 포함하여 스택을 초기화
+3. 코드는 사용자가 계정을 삭제한 후, 앱의 상태를 완전히 초기화하고 로그인 화면으로 강제 이동시키는데 사용됨 -> 이는 사용자가 '뒤로 가기'를 통해 이전 화면으로 돌아갈 수 없게 만들어 보안을 강화하는 역할을 함
