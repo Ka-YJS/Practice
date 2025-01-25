@@ -16,21 +16,21 @@ import { UserContext } from "../contexts/UserContext";
 import { useNavigation } from "@react-navigation/native";
 
 const MyPost = () => {
-  const { user } = useContext(UserContext); // 현재 로그인 사용자 정보
-  const [myPosts, setMyPosts] = useState([]); // 게시물 상태
-  const [loading, setLoading] = useState(true); // 로딩 상태
+  const { user } = useContext(UserContext);//현재 로그인 사용자 정보
+  const [myPosts, setMyPosts] = useState([]);//게시물 상태
+  const [loading, setLoading] = useState(true);//로딩 상태
   const navigation = useNavigation();
 
-  // 데이터 요청 함수
+ //데이터 요청 함수
   const fetchMyPosts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://192.168.3.25:9090/api/myPosts/${user.id}`, {
+      const response = await axios.get(`http://백엔드엔드포인트/api/myPosts/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }
       });
-      setMyPosts(response.data.data); // 서버에서 데이터 배열을 받아와 상태에 저장
+      setMyPosts(response.data.data);//서버에서 데이터 배열을 받아와 상태에 저장
     } catch (error) {
       console.error("Error fetching my posts:", error);
     } finally {
@@ -38,16 +38,16 @@ const MyPost = () => {
     }
   };
 
-  // 컴포넌트 마운트 시 데이터 로드
+ //컴포넌트 마운트 시 데이터 로드
   useEffect(() => {
     fetchMyPosts();
   }, []);
 
-  // 게시물 순서 반대로 변경
-  const reversedPosts = myPosts.slice().reverse(); // myPosts의 복사본을 만들고 순서를 반대로
+ //게시물 순서 반대로 변경
+  const reversedPosts = myPosts.slice().reverse();//myPosts의 복사본을 만들고 순서를 반대로
 
 
-  // 게시물 렌더링 함수
+ //게시물 렌더링 함수
   const renderPostItem = ({ item }) => (
     <TouchableOpacity
       style={styles.postItem}
@@ -56,7 +56,7 @@ const MyPost = () => {
       {/* 썸네일 */}
       {item.imageUrls && item.imageUrls.length > 0 ? (
         <Image
-          source={{ uri: `http://192.168.3.25:9090${item.imageUrls[0]}` }}
+          source={{ uri: `http://백엔드엔드포인트${item.imageUrls[0]}` }}
           style={styles.thumbnail}
         />
       ) : (
@@ -90,7 +90,7 @@ const MyPost = () => {
           <Text>게시물을 불러오는 중...</Text>
         </View>
       ) : myPosts.length > 0 ? (
-        // 게시물 리스트
+       //게시물 리스트
         <FlatList
           data={reversedPosts}
           renderItem={renderPostItem}
@@ -120,8 +120,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#f9f9f9",
     overflow: "hidden",
-    elevation: 2, // Android 그림자
-    shadowColor: "#000", // iOS 그림자
+    elevation: 2,//Android 그림자
+    shadowColor: "#000",//iOS 그림자
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   postTitle: {
     fontSize: 16,
-    fontFamily: 'GCB_Bold', // 추가
+    fontFamily: 'GCB_Bold',//추가
     color: "#333",
     marginBottom: 5,
   },
@@ -161,12 +161,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#666",
     marginBottom: 10,
-    fontFamily: 'GCB', // 추가
+    fontFamily: 'GCB',//추가
   },
   likeCount: {
     fontSize: 14,
     color: "#999",
-    fontFamily: 'GCB', // 추가
+    fontFamily: 'GCB',//추가
   },
   noPostsContainer: {
     flex: 1,
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: "#555",
     textAlign: "right",
-    fontFamily: 'GCB', // 추가
+    fontFamily: 'GCB',//추가
   },
   loadingContainer: {
     flex: 1,
@@ -197,13 +197,10 @@ export default MyPost;
 # 코드설명
 
 ```JS
-
+<ActivityIndicator size="large" color="#999" />
 ```
-
-```JS
-
-```
-
-```JS
-
-```
+1. ActivityIndicator
+  - React Native에서 제공하는 로딩 스피너 컴포넌트입니다. size 속성은 스피너의 크기를, color는 색상을 지정함
+  - loading 상태가 true일 때 표시됨
+  - 데이터 fetch 시작 시 표시되고 완료 시 사라짐
+  - 사용자에게 데이터 로딩 중임을 시각적으로 알림
