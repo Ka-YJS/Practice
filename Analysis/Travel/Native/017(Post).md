@@ -4,7 +4,7 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { View, Text, FlatList, Image, TouchableOpacity, TextInput, StyleSheet } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import axios from "axios"; // Import axios
+import axios from "axios";//Import axios
 import { PlaceContext } from "../contexts/PlaceContext";
 import { PostContext } from "../contexts/PostContext";
 import { UserContext } from "../contexts/UserContext";
@@ -18,18 +18,18 @@ const Post = () => {
   const [likedPosts, setLikedPosts] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Fetch posts from API
+ //Fetch posts from API
   useFocusEffect(
     useCallback(() => {
       const fetchPosts = async () => {
         try {
-          const response = await axios.get("http://192.168.3.25:9090/api/posts", {
+          const response = await axios.get("http://백엔드엔드포인트/api/posts", {
             headers: {
               'Authorization': `Bearer ${user.token}`
             }
             
           });
-          setPostList(response.data.data); // Set the fetched posts to the postList state
+          setPostList(response.data.data);//Set the fetched posts to the postList state
           console.log(response.data.data)
         } catch (error) {
           console.error("Error fetching posts:", error);
@@ -37,8 +37,8 @@ const Post = () => {
 
       };
 
-      fetchPosts(); // Fetch posts when screen is focused
-    }, [user.token]) // Dependency array
+      fetchPosts();//Fetch posts when screen is focused
+    }, [user.token])//Dependency array
   );
 
   useEffect(() => {
@@ -47,14 +47,14 @@ const Post = () => {
         const likedStatus = {};
         for (const post of postList) {
           const response = await axios.get(
-            `http://192.168.3.25:9090/api/likes/${post.postId}/isLiked`,
+            `http://백엔드엔드포인트/api/likes/${post.postId}/isLiked`,
             {
               headers: {
                 Authorization: `Bearer ${user.token}`,
               },
             }
           );
-          likedStatus[post.postId] = response.data; // API 결과를 저장
+          likedStatus[post.postId] = response.data;//API 결과를 저장
         }
         setLikedPosts(likedStatus);
       } catch (error) {
@@ -71,21 +71,21 @@ const Post = () => {
     post.postTitle.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Reverse the order of posts
-  const reversedPosts = filteredPosts.slice().reverse(); // Make a copy and reverse
+ //Reverse the order of posts
+  const reversedPosts = filteredPosts.slice().reverse();//Make a copy and reverse
 
   const likeButtonClick = async (postId) => {
     try {
       if (likedPosts[postId]) {
-        // 이미 좋아요 상태인 경우 API를 통해 좋아요 삭제
-        await axios.delete(`http://192.168.3.25:9090/api/likes/${postId}`, {
+       //이미 좋아요 상태인 경우 API를 통해 좋아요 삭제
+        await axios.delete(`http://백엔드엔드포인트/api/likes/${postId}`, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         });
         setLikedPosts((prevLikedPosts) => ({
           ...prevLikedPosts,
-          [postId]: false, // 좋아요 상태 해제
+          [postId]: false,//좋아요 상태 해제
         }));
         setPostList((prevPosts) =>
           prevPosts.map((post) =>
@@ -93,15 +93,15 @@ const Post = () => {
           )
         );
       } else {
-        // 좋아요 상태가 아닌 경우 API를 통해 좋아요 추가
-        await axios.post(`http://192.168.3.25:9090/api/likes/${postId}`, {}, {
+       //좋아요 상태가 아닌 경우 API를 통해 좋아요 추가
+        await axios.post(`http://백엔드엔드포인트/api/likes/${postId}`, {}, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         });
         setLikedPosts((prevLikedPosts) => ({
           ...prevLikedPosts,
-          [postId]: true, // 좋아요 상태로 설정
+          [postId]: true,//좋아요 상태로 설정
         }));
         setPostList((prevPosts) =>
           prevPosts.map((post) =>
@@ -130,7 +130,7 @@ const Post = () => {
   const renderPost = ({ item }) => {
 
     const thumbnail = item.imageUrls && item.imageUrls.length > 0
-      ? `http://192.168.3.25:9090${item.imageUrls[0]}`
+      ? `http://백엔드엔드포인트${item.imageUrls[0]}`
       : null;
 
     return (
@@ -145,8 +145,8 @@ const Post = () => {
         {/* 제목은 item.postTitle로 표시 */}
         <Text
           style={styles.title}
-          numberOfLines={1} // 한 줄로 제한
-          ellipsizeMode="tail" // 끝에 '...' 추가
+          numberOfLines={1}//한 줄로 제한
+          ellipsizeMode="tail"//끝에 '...' 추가
         >
           {item.postTitle}
         </Text>
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
     marginTop: 5,
-    fontFamily: 'GCB_Bold', // 추가
+    fontFamily: 'GCB_Bold',//추가
   },
   searchInput: {
     height: 40,
@@ -227,29 +227,29 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
-    fontFamily: 'GCB_Bold', // 추가
+    fontFamily: 'GCB_Bold',//추가
   },
   postList: {
     justifyContent: "space-between",
-    alignItems: "flex-start", // 게시물 왼쪽 정렬
-    paddingBottom: 20, // 아래 여백 추가
+    alignItems: "flex-start",//게시물 왼쪽 정렬
+    paddingBottom: 20,//아래 여백 추가
   },
   postItem: {
     margin: 5,
-    flexBasis: "30.8%", // 아이템 크기를 3열로 균등 분배
-    alignItems: "center", // 아이템 내용 중앙 정렬
+    flexBasis: "30.8%",//아이템 크기를 3열로 균등 분배
+    alignItems: "center",//아이템 내용 중앙 정렬
     backgroundColor: "#fff",
     borderRadius: 8,
     padding: 10,
-    elevation: 2, // 그림자 효과 (Android)
-    shadowColor: "#000", // 그림자 색상 (iOS)
+    elevation: 2,//그림자 효과 (Android)
+    shadowColor: "#000",//그림자 색상 (iOS)
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },
   thumbnail: {
-    width: "100%", // 부모 컨테이너 너비에 맞춤
-    aspectRatio: 1, // 정사각형 이미지
+    width: "100%",//부모 컨테이너 너비에 맞춤
+    aspectRatio: 1,//정사각형 이미지
     borderRadius: 8,
     marginBottom: 5,
   },
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     marginBottom: 3,
-    fontFamily: 'GCB_Bold', // 추가
+    fontFamily: 'GCB_Bold',//추가
   },
   likeButton: {
     fontSize: 12,
@@ -285,13 +285,13 @@ const styles = StyleSheet.create({
   },
   writeButtonText: {
     color: "white",
-    fontFamily: 'GCB_Bold', // 추가
+    fontFamily: 'GCB_Bold',//추가
   },
   author: {
     fontSize: 12,
     color: "#555",
     marginBottom: 2,
-    fontFamily: 'GCB', // 추가
+    fontFamily: 'GCB',//추가
   },
   createTime: {
     marginTop: 2,
@@ -299,8 +299,8 @@ const styles = StyleSheet.create({
     color: "#555",
   },
   noImage: {
-    width: "100%", // 부모 컨테이너 너비에 맞춤
-    aspectRatio: 1, // 정사각형 이미지
+    width: "100%",//부모 컨테이너 너비에 맞춤
+    aspectRatio: 1,//정사각형 이미지
     borderRadius: 8,
     marginBottom: 5,
     backgroundColor: "#DDDDDD",
@@ -321,13 +321,15 @@ export default Post;
 # 코드설명
 
 ```JS
-
+const [likedPosts, setLikedPosts] = useState({});
 ```
-
+1. ""대신 {}역할 : 빈 객체({})를 초기값으로 사용하는 이유는 각 게시물의 좋아요 상태를 키-값 쌍으로 저장하기 위함임
 ```JS
-
+const filteredPosts = (Array.isArray(postList) ? postList : []).filter((post) =>
+  post.postTitle.toLowerCase().includes(searchQuery.toLowerCase())
+);
 ```
-
-```JS
-
-```
+1. Array.isArray(postList) ? postList : [] : postList가 배열인지 확인하고, 아니면 빈 배열 반환함
+2. toLowerCase() : 대소문자 구분 없이 검색하기 위해 모두 소문자로 변환함
+3. includes(searchQuery.toLowerCase()) : 게시물 제목에 검색어가 포함되어 있는지 확인함
+4. 이 로직으로 사용자가 입력한 검색어에 맞는 게시물만 필터링됨
