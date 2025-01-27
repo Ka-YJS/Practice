@@ -30,12 +30,12 @@ const PostDetail = ({ route }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  // 초기 좋아요 상태 확인
+  //초기 좋아요 상태 확인
   useEffect(() => {
     const checkLikeStatus = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.3.25:9090/api/likes/${post.postId}/isLiked`,
+          `http://백엔드엔드포인트/api/likes/${post.postId}/isLiked`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -51,12 +51,12 @@ const PostDetail = ({ route }) => {
     checkLikeStatus();
   }, [id]);
 
-  // 좋아요 토글 핸들러
+  //좋아요 토글 핸들러
   const handleLike = async () => {
     try {
       if (isLiked) {
-        // 좋아요 취소
-        await axios.delete(`http://192.168.3.25:9090/api/likes/${post.postId}`,
+        //좋아요 취소
+        await axios.delete(`http://백엔드엔드포인트/api/likes/${post.postId}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -64,8 +64,8 @@ const PostDetail = ({ route }) => {
           });
         setLikes(prev => prev - 1);
       } else {
-        // 좋아요 추가
-        await axios.post(`http://192.168.3.25:9090/api/likes/${post.postId}`,{},
+        //좋아요 추가
+        await axios.post(`http://백엔드엔드포인트/api/likes/${post.postId}`,{},
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -90,7 +90,7 @@ const PostDetail = ({ route }) => {
 
   const isPostOwner = post.userId === user.id;
 
-  // 이미지 렌더링 함수
+  //이미지 렌더링 함수
   const renderImage = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
@@ -99,7 +99,7 @@ const PostDetail = ({ route }) => {
       }}
     >
       <Image
-        source={{ uri: `http://192.168.3.25:9090${item}` }}
+        source={{ uri: `http://백엔드엔드포인트${item}` }}
         style={styles.image}
       />
     </TouchableOpacity>
@@ -221,7 +221,7 @@ const PostDetail = ({ route }) => {
             <Text style={styles.modalCloseText}>닫기</Text>
           </TouchableOpacity>
           <Image
-            source={{ uri: `http://192.168.3.25:9090${selectedImage}` }}
+            source={{ uri: `http://백엔드엔드포인트${selectedImage}` }}
             style={styles.modalImage}
             resizeMode="contain"
           />
@@ -252,19 +252,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
     paddingBottom: 5,
-    fontFamily: 'GCB', // 추가
+    fontFamily: 'GCB', //추가
   },
   title: {
     fontSize: 22,
     color: "#333",
     marginBottom: 5,
-    fontFamily: 'GCB_Bold', // 추가
+    fontFamily: 'GCB_Bold', //추가
   },
   text: {
     fontSize: 16,
     lineHeight: 24,
     color: "#444",
-    fontFamily: 'GCB_Bold', // 추가
+    fontFamily: 'GCB_Bold', //추가
   },
   ContentText: {
     fontSize: 16,
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     width: "100%",
-    justifyContent: "flex-end",  // 버튼을 오른쪽에 배치
+    justifyContent: "flex-end",  //버튼을 오른쪽에 배치
   },
   likeButton: {
     paddingVertical: 7,
@@ -308,16 +308,16 @@ const styles = StyleSheet.create({
   likeButtonText: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: 'GCB', // 추가
+    fontFamily: 'GCB', //추가
   },
   likeCount: {
     fontSize: 18,
     color: "#555",
-    textAlign: "left", // 좋아요 개수를 왼쪽 정렬
-    marginRight: "auto", // 왼쪽 정렬을 위한 자동 마진
+    textAlign: "left", //좋아요 개수를 왼쪽 정렬
+    marginRight: "auto", //왼쪽 정렬을 위한 자동 마진
     marginLeft : 10,
     marginBottom : 10,
-    fontFamily: 'GCB_Bold', // 추가
+    fontFamily: 'GCB_Bold', //추가
   },
   ownerButtons: {
     flexDirection: "row",
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     fontSize: 16,
-    fontFamily: 'GCB_Bold', // 추가
+    fontFamily: 'GCB_Bold', //추가
   },
   errorText: {
     fontSize: 18,
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
   modalCloseText: {
     color: "#fff",
     fontSize: 16,
-    fontFamily: 'GCB_Bold', // 추가
+    fontFamily: 'GCB_Bold', //추가
   },
   modalImage: {
     width: "100%",
@@ -387,13 +387,14 @@ export default PostDetail;
 # 코드설명
 
 ```JS
-
+const { id } = route.params;
+const post = postList.find((p) => p.postId === id);
 ```
-
+1. route.params
+2. postList.find((p) => p.postId === id)
 ```JS
-
+Modal visible={modalVisible} transparent={true} animationType="fade"
 ```
-
-```JS
-
-```
+1. visible={modalVisible}
+2. transparent={true}
+3. animationType="fade"
