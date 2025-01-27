@@ -391,10 +391,26 @@ const { id } = route.params;
 const post = postList.find((p) => p.postId === id);
 ```
 1. route.params
+  - React Navigation에서 화면 간 데이터를 전달할 때 사용하는 객체임
+  - 다른 화면에서 navigation.navigate("PostDetail", { id: someId })와 같이 호출할 때 전달된 파라미터를 받아옴
+  - 여기서는 구조분해할당을 사용해 route.params에서 id 값만 추출함
+  - 구조분해할당이란? 배열이나 객체의 요소를 쉽게 추출하여 변수에 할당할 수 있게 해주는 기능임
 2. postList.find((p) => p.postId === id)
+  - postList 배열에서 특정 게시물을 찾는 JavaScript 배열 메서드임
+  - find() 메서드는 조건을 만족하는 첫 번째 요소를 반환함
+  - 각 게시물 p를 순회하면서 p.postId가 전달받은 id와 일치하는 게시물을 찾으며, 찾은 게시물은 post변수에 저장됨
 ```JS
 Modal visible={modalVisible} transparent={true} animationType="fade"
 ```
 1. visible={modalVisible}
+  - 모달의 표시 여부를 제어하는 props임
+  - modalVisible 상태값이 true면 모달이 표시되고, false면 숨겨짐
+  - useState로 관리되는 상태값으로, 이미지 클릭 시 true로 설정됨
 2. transparent={true}
+  - 모달의 배경을 투명하게 만드는 props임
+  - true로 설정하면 모달 외부가 반투명한 검정색으로 표시됨
+  - 이를 통해 사용자는 모달이 떠있는 상태임을 시각적으로 인지할 수 있음
 3. animationType="fade"
+  - 모달이 나타나고 사라질 때의 애니메이션 효과를 지정함
+  - "fade"는 페이드 인/아웃 효과를 적용함
+  - 다른 옵션으로는 "slide", "none" 등이 있음
