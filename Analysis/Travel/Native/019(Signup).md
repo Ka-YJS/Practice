@@ -73,7 +73,7 @@ const Signup = () => {
     setIdErrorMessage(
       validateEmail(changedUserId) ? "" : "이메일(아이디) 형식을 확인하세요"
     );
-    setIsUserIdChecked(false); // Reset user ID check when user changes input
+    setIsUserIdChecked(false);//Reset user ID check when user changes input
   };
 
   const handlePasswordChange = (password) => {
@@ -109,7 +109,7 @@ const Signup = () => {
 
     try {
       setIsLoading(true);
-      const response = await axios.get(`http://192.168.3.25:9090/api/email/auth?address=${userId}`);
+      const response = await axios.get(`http://백엔드엔드포인트/api/email/auth?address=${userId}`);
 
       if (response.data.success) {
         alert("인증 코드가 이메일로 전송되었습니다.");
@@ -132,7 +132,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post(`http://192.168.3.25:9090/api/email/auth?address=${userId}&authCode=${authCode}`);
+      const response = await axios.post(`http://백엔드엔드포인트/api/email/auth?address=${userId}&authCode=${authCode}`);
 
       if (response.data.success) {
         alert("이메일 인증이 완료되었습니다.");
@@ -154,7 +154,7 @@ const Signup = () => {
 
     try {
       setIsLoading(true);
-      const response = await axios.post("http://192.168.3.25:9090/travel/userIdCheck", { userId });
+      const response = await axios.post("http://백엔드엔드포인트/travel/userIdCheck", { userId });
 
       if (response.data) {
         alert("사용 가능한 아이디입니다.");
@@ -206,13 +206,13 @@ const Signup = () => {
     };
 
     try {
-      const response = await axios.post("http://192.168.3.25:9090/travel/signup", newUser, {
+      const response = await axios.post("http://백엔드엔드포인트/travel/signup", newUser, {
         headers: { "Content-Type": "application/json" },
       });
 
       if (response.status === 200) {
         alert("회원가입이 완료되었습니다!");
-        registerUser(newUser); // Optional: UserContext 업데이트
+        registerUser(newUser);//Optional: UserContext 업데이트
         navigation.navigate("Login");
       } else {
         alert("회원가입 중 문제가 발생했습니다. 다시 시도해주세요.");
@@ -259,7 +259,7 @@ const Signup = () => {
             disabled={
               isLoading || 
               (isAuthCodeSent && !authCode) || 
-              (!isAuthCodeSent && (!validateEmail(userId) || !isUserIdChecked)) // 인증 코드 발송 비활성화 조건에 중복 체크 추가 
+              (!isAuthCodeSent && (!validateEmail(userId) || !isUserIdChecked))//인증 코드 발송 비활성화 조건에 중복 체크 추가 
             }
           />
         )}
