@@ -313,16 +313,4 @@ export default Signup;
 
 # 코드설명
 
-```JS
-<Background source={require("../../assets/flowers.png")} resizeMode="cover">
-```
-1. Background
-  - styled-components를 사용하여 스타일링된 ImageBackground 컴포넌트임
-  - 전체 화면을 채우는 배경 이미지를 제공하며, 내부 콘텐츠를 중앙 정렬함
-2. resizeMode="cover"
-  - 이미지가 컨테이너를 어떻게 채울지 지정하는 속성임
-  - "cover" 모드의 특징
-    1. 이미지의 종횡비(aspect ratio)를 유지함
-    2. 컨테이너의 전체 영역을 빈 공간 없이 덮도록 이미지를 확대/축소함
-    3. 필요한 경우 이미지의 일부가 잘릴 수 있지만, 이미지가 늘어나거나 찌그러지지 않음
-    4. 배경 이미지가 항상 화면을 완전히 채우도록 보장하여 전문적인 디자인을 제공함
+\-
